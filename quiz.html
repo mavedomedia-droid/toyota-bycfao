@@ -872,9 +872,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   // ⚙️ CONFIG – replace with your Apps Script endpoint
   var GAS_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
-  // Thank‑you page routing (matching your directory structure)
+  // 👇 Updated thank‑you page routing – clean URLs, firstName appended in submitQuiz()
   var THANKYOU_URLS = {
-    buy: '/thank-you/buy',
+    buy: '/thank-you/car-sale',
     service: '/thank-you/service',
     parts: '/thank-you/parts',
     oil: '/thank-you/oil',
@@ -999,13 +999,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     Object.assign(vals, utmParams);
     vals.submittedAt = new Date().toISOString();
 
-    // Determine redirect URL
+    // Determine redirect URL, append firstName
     var redirectUrl;
     if (userType === 'general' && vals.enquiryType === 'Oil & fluids') {
       redirectUrl = THANKYOU_URLS.oil;
     } else {
       redirectUrl = THANKYOU_URLS[userType] || '/thank-you/service';
     }
+    redirectUrl = redirectUrl + '?firstName=' + encodeURIComponent(vals.firstName || '');
 
     var btn = document.getElementById('submit-btn');
     btn.disabled = true;
@@ -1072,7 +1073,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .then(function(data){
       console.log('✅ Callback submitted:', data);
       window.dataLayer.push({ event: 'callback_request', intent: intent });
-      window.location.href = '/thank-you/callback';
+      // Callback redirect – passing an empty firstName (no name collected)
+      window.location.href = '/thank-you/callback?firstName=';
     })
     .catch(function(err){
       console.error('❌ Callback failed:', err);
