@@ -14,6 +14,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 <style>
+  /* ═══════════════════════════════════════════════════
+     FULL CSS – identical to your latest quiz page, 
+     but all input/select font-size set to 16px for iOS.
+     ═══════════════════════════════════════════════════ */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --red:#EB0A1E; --red-dark:#C70816;
@@ -127,11 +131,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     transition:opacity .15s, transform .15s; flex-shrink:0; }
   .opt-check::after { content:''; width:8px; height:8px; border-radius:50%; background:var(--red); }
 
+  /* Inputs – all bumped to 16px for iOS */
   .qinput-group { margin-bottom:14px; }
   .qinput-group label { display:block; font-size:12px; font-weight:600; color:var(--text); margin-bottom:5px; }
   .qinput-group input, .qinput-group select, .qinput-group textarea {
     width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px;
-    font:400 15px 'Inter',sans-serif; color:var(--text); background:var(--white);
+    font:400 16px 'Inter',sans-serif; color:var(--text); background:var(--white);
     outline:none; transition:border-color .2s, box-shadow .2s; }
   .qinput-group input:focus, .qinput-group select:focus, .qinput-group textarea:focus {
     border-color:var(--red); box-shadow:0 0 0 3px rgba(235,10,30,.1); }
@@ -141,12 +146,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .qrow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .phone-prefix { display:flex; align-items:stretch; }
   .phone-prefix span { background:#F0F0F2; border:1.5px solid var(--border); border-right:none;
-    padding:10px 12px; border-radius:8px 0 0 8px; font-size:15px; color:var(--muted); display:flex; align-items:center; }
+    padding:10px 12px; border-radius:8px 0 0 8px; font-size:16px; color:var(--muted); display:flex; align-items:center; }
   .phone-prefix input { border-radius:0 8px 8px 0; flex:1; }
+  .phone-prefix select { width:auto; border-radius:8px 0 0 8px; font-size:16px; padding:10px 8px; }
   .hp-field { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
 
   .next-btn { width:100%; padding:12px; background:var(--red); color:#fff; border:none;
-    border-radius:8px; font:500 15px 'Inter',sans-serif; cursor:pointer; margin-top:16px; transition:background .2s; }
+    border-radius:8px; font:500 16px 'Inter',sans-serif; cursor:pointer; margin-top:16px; transition:background .2s; }
   .next-btn:hover { background:var(--red-dark); }
   .next-btn:disabled { opacity:.5; cursor:not-allowed; }
   .consent { font-size:11.5px; color:var(--muted); line-height:1.5; margin-top:10px; text-align:center; }
@@ -180,7 +186,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .modal-sub { font-size:14px; color:var(--muted); margin-bottom:20px; }
   .modal-form .qinput-group { margin-bottom:14px; }
   .modal-submit-btn { width:100%; padding:12px; background:var(--red); color:#fff; border:none;
-    border-radius:8px; font:500 15px 'Inter',sans-serif; cursor:pointer; margin-top:8px; }
+    border-radius:8px; font:500 16px 'Inter',sans-serif; cursor:pointer; margin-top:8px; }
 
   /* SECTIONS */
   .section { padding:72px 48px; max-width:1160px; margin:0 auto; }
@@ -302,7 +308,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <a href="#" class="mob-cta" onclick="openCallbackModal(); return false;">Request a Callback</a>
 </div>
 
-<!-- Callback Modal (now includes Email) -->
+<!-- Callback Modal (with name fields, editable prefix) -->
 <div class="modal-overlay" id="callback-modal">
   <div class="modal-card">
     <button class="modal-close" onclick="closeCallbackModal()">&times;</button>
@@ -322,6 +328,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </select>
         <div class="field-error" id="callback-intent-error">Please select an option.</div>
       </div>
+      <div class="qrow">
+        <div class="qinput-group">
+          <label>First name *</label>
+          <input type="text" id="callback-fname" placeholder="Chinedu" oninput="document.getElementById('callback-fname-error').classList.remove('show')">
+          <div class="field-error" id="callback-fname-error">Required</div>
+        </div>
+        <div class="qinput-group">
+          <label>Last name</label>
+          <input type="text" id="callback-lname" placeholder="Adekunle">
+        </div>
+      </div>
       <div class="qinput-group">
         <label>Email *</label>
         <input type="email" id="callback-email" placeholder="chinedu.ade@email.com" oninput="document.getElementById('callback-email-error').classList.remove('show')">
@@ -329,7 +346,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </div>
       <div class="qinput-group">
         <label>Your Phone Number (WhatsApp) *</label>
-        <div class="phone-prefix"><span>+234</span>
+        <div class="phone-prefix">
+          <select id="callback-phone-prefix" onchange="handlePrefixChange('callback-phone-prefix','callback-phone-other','callback-phone')">
+            <option value="+234">+234</option>
+            <option value="+233">+233</option>
+            <option value="+1">+1</option>
+            <option value="+44">+44</option>
+            <option value="other">Other</option>
+          </select>
+          <input type="text" id="callback-phone-other" placeholder="Code" style="display:none; width:80px; border-radius:0;" oninput="document.getElementById('callback-phone').value=this.value">
           <input type="tel" id="callback-phone" placeholder="801 234 5678" oninput="document.getElementById('callback-phone-error').classList.remove('show')">
         </div>
         <div class="field-error" id="callback-phone-error">Valid phone number required</div>
@@ -376,6 +401,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <span class="quiz-progress-label" id="qplabel"></span>
       </div>
 
+      <!-- STEP 0 – Intent -->
       <div class="quiz-step active" id="step-0">
         <div class="quiz-q">Which service are you interested in today?</div>
         <div class="quiz-hint">Select your path - we'll guide you through.</div>
@@ -403,6 +429,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </div>
       </div>
 
+      <!-- BUY A CAR -->
       <div class="quiz-step" id="buy-brand">
         <div class="step-label">Buy a Car · 1 of 2</div>
         <div class="quiz-q">Which brand are you interested in?</div>
@@ -425,6 +452,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <button class="back-btn" onclick="goTo('buy-brand')">&larr; Back</button>
       </div>
 
+      <!-- SERVICE -->
       <div class="quiz-step" id="srv-brand">
         <div class="step-label">Service · 1 of 3</div>
         <div class="quiz-q">Which brand is your vehicle?</div>
@@ -454,6 +482,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <button class="back-btn" onclick="goTo('srv-model')">&larr; Back</button>
       </div>
 
+      <!-- PARTS -->
       <div class="quiz-step" id="prt-brand">
         <div class="step-label">Parts · 1 of 3</div>
         <div class="quiz-q">Which brand do you need parts for?</div>
@@ -483,6 +512,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <button class="back-btn" onclick="goTo('prt-model')">&larr; Back</button>
       </div>
 
+      <!-- GENERAL ENQUIRY -->
       <div class="quiz-step" id="gen-type">
         <div class="step-label">General Enquiry</div>
         <div class="quiz-q">What do you need help with?</div>
@@ -496,6 +526,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
       </div>
 
+      <!-- CONTACT -->
       <div class="quiz-step" id="contact">
         <div class="step-label">Your details</div>
         <div class="quiz-q">How can we reach you?</div>
@@ -512,6 +543,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <button class="back-btn" onclick="goToPreviousContact()">&larr; Back</button>
       </div>
 
+      <!-- REJECTION -->
       <div class="quiz-step" id="rejection">
         <div class="rejection-card">
           <div class="rejection-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
@@ -521,6 +553,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </div>
       </div>
 
+      <!-- LOADING -->
       <div class="quiz-step" id="redirecting">
         <div class="ty-loading"><p>Submitting your enquiry...</p><p style="font-size:13px;">You'll be redirected shortly.</p></div>
       </div>
@@ -638,8 +671,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script>
   window.dataLayer = window.dataLayer || [];
 
-  // CONFIG – GAS_URL is now defined in config.js, so we don't redeclare it here.
-
   var THANKYOU_URLS = {
     buy: '/thank-you/car-sale',
     service: '/thank-you/service',
@@ -663,7 +694,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   function setVal(k,v){ vals[k]=v; }
 
-  // Normalize a Nigerian phone to E.164 (+234XXXXXXXXXX)
   function normalizePhone(raw){
     if(!raw) return '';
     var d = (''+raw).replace(/\D/g,'');
@@ -721,7 +751,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   function clearError(input){ if(!input) return; input.classList.remove('error'); var e=document.getElementById('err-'+input.id); if(e) e.classList.remove('show'); }
 
   function submitQuiz(){
-    // Honeypot: silently drop bots
     if(document.getElementById('website').value){ return; }
 
     var fname = document.getElementById('fname').value.trim();
@@ -762,7 +791,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     submitFinished = false;
     function go(){ if(submitFinished) return; submitFinished = true; window.location.href = redirectUrl; }
-    // Safety net: if the network hangs, still move the user forward (lead usually saved)
     var failsafe = setTimeout(go, 8000);
 
     fetch(GAS_URL, { method:'POST', body:JSON.stringify(vals), headers:{'Content-Type':'text/plain'} })
@@ -780,24 +808,50 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   function openCallbackModal(){ document.getElementById('callback-modal').classList.add('active'); document.body.style.overflow='hidden'; }
   function closeCallbackModal(){ document.getElementById('callback-modal').classList.remove('active'); document.body.style.overflow=''; document.querySelectorAll('#callback-modal .field-error').forEach(function(e){ e.classList.remove('show'); }); }
+
+  function handlePrefixChange(selectId, otherInputId, phoneInputId) {
+    var sel = document.getElementById(selectId);
+    var other = document.getElementById(otherInputId);
+    var phoneInput = document.getElementById(phoneInputId);
+    if (sel.value === 'other') {
+      other.style.display = 'block';
+      phoneInput.placeholder = 'Enter number';
+      phoneInput.value = '';
+      other.focus();
+    } else {
+      other.style.display = 'none';
+      phoneInput.placeholder = '801 234 5678';
+      phoneInput.value = '';
+    }
+  }
+
   function submitCallback(){
-    if(document.getElementById('cb-company').value){ return; } // honeypot
-    var intent=document.getElementById('callback-intent').value;
-    var email=document.getElementById('callback-email').value.trim();
-    var phone=document.getElementById('callback-phone').value.trim();
-    var timing=document.getElementById('callback-timing').value;
-    var valid=true;
-    if(!intent){ document.getElementById('callback-intent-error').classList.add('show'); valid=false; }
-    if(!email || !isValidEmail(email)){ document.getElementById('callback-email-error').classList.add('show'); valid=false; }
-    if(!phone || !isValidNGPhone(phone)){ document.getElementById('callback-phone-error').classList.add('show'); valid=false; }
-    if(!timing){ document.getElementById('callback-timing-error').classList.add('show'); valid=false; }
+    if(document.getElementById('cb-company').value){ return; }
+
+    var intent = document.getElementById('callback-intent').value;
+    var fname  = document.getElementById('callback-fname').value.trim();
+    var lname  = document.getElementById('callback-lname').value.trim();
+    var email  = document.getElementById('callback-email').value.trim();
+    var phone  = document.getElementById('callback-phone').value.trim();
+    var prefix = document.getElementById('callback-phone-prefix').value;
+    var timing = document.getElementById('callback-timing').value;
+    var valid = true;
+
+    if(!intent){ document.getElementById('callback-intent-error').classList.add('show'); valid = false; }
+    if(!fname){ document.getElementById('callback-fname-error').classList.add('show'); valid = false; }
+    if(!email || !isValidEmail(email)){ document.getElementById('callback-email-error').classList.add('show'); valid = false; }
+    if(!phone || !isValidNGPhone(phone)){ document.getElementById('callback-phone-error').classList.add('show'); valid = false; }
+    if(!timing){ document.getElementById('callback-timing-error').classList.add('show'); valid = false; }
     if(!valid) return;
 
+    var fullPhone = prefix === 'other' ? (document.getElementById('callback-phone-other').value + phone) : (prefix + phone);
     var payload = {
       type: 'callback',
       intent: intent,
+      firstName: fname,
+      lastName: lname,
       email: email,
-      phone: normalizePhone(phone),
+      phone: normalizePhone(fullPhone),
       callbackTiming: timing,
       submittedAt: new Date().toISOString()
     };
@@ -805,8 +859,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload), headers:{'Content-Type':'text/plain'} })
       .then(function(r){ return r.ok ? r.json() : Promise.reject('HTTP '+r.status); })
-      .then(function(data){ window.dataLayer.push({event:'callback_request', intent:intent}); window.location.href='/thank-you/callback?firstName=' + encodeURIComponent(email.split('@')[0]); })
-      .catch(function(err){ console.error('Callback failed:', err); alert('Sorry, something went wrong. Please try again.'); });
+      .then(function(data){
+        window.dataLayer.push({event:'callback_request', intent:intent});
+        window.location.href = '/thank-you/callback?firstName=' + encodeURIComponent(fname);
+      })
+      .catch(function(err){
+        console.error('Callback failed:', err);
+        alert('Sorry, something went wrong. Please try again.');
+      });
   }
 
   document.addEventListener('keydown', function(e){
