@@ -21,7 +21,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 <style>
-  /* --- All CSS exactly as previous version --- */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --red:#EB0A1E; --red-dark:#C70816;
@@ -345,7 +344,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="hero-left">
       <div class="hero-badge"><b></b> Official Toyota Distributor · Nigeria</div>
       <h1 class="hero-title">Buy a new Toyota</h1>
-      <!-- ★ Updated hero sub: no more "Tell us what you're looking for..." -->
       <p class="hero-sub">Book a test drive and let the trusted team reach out to you.</p>
       <div class="hero-trust">
         <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Free Registration</span>
@@ -607,6 +605,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     if(!phone || !isValidNGPhone(phone)){ showError('phone','err-phone'); valid=false; }
     if(!valid) return;
 
+    // Build payload exactly matching GAS column names
     var payload = {
       type: 'buy-car',
       email: email,
@@ -616,7 +615,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       city: vals.location || '',
       brand: 'Toyota',
       model: vals.model || '',
-      timeline: '',
+      timeline: '',                         // no timeline question
       enquiryType: vals.intent || '',
       serviceType: '',
       budget: vals.budget || '',
@@ -628,12 +627,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       utm_term: utmParams.utm_term || '',
       submittedAt: new Date().toISOString()
     };
-
-    vals.firstName = fname;
-    vals.lastName = payload.lastName;
-    vals.email = email;
-    vals.phone = payload.phone;
-    vals.city = payload.city;
 
     var btn = document.getElementById('submit-btn');
     btn.disabled = true; btn.textContent = 'Submitting...';
