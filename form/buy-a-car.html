@@ -125,6 +125,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .opts { display:flex; flex-direction:column; gap:10px; }
   .opts.g4 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 
+  /* Screen 1 – car category picker (2x3 icon grid) */
+  .car-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .car-opt { border:1.5px solid var(--border); border-radius:14px; padding:14px 10px 12px; background:#FAFAFB;
+    cursor:pointer; text-align:center; transition:.15s; display:flex; flex-direction:column; align-items:center; gap:7px;
+    position:relative; font-family:'Inter',sans-serif; width:100%; }
+  .car-opt:hover { border-color:var(--red); background:rgba(235,10,30,0.02); }
+  .car-opt.selected { border-color:var(--red); background:rgba(235,10,30,0.03); box-shadow:inset 0 0 0 1px rgba(235,10,30,0.12); }
+  .car-icon { width:44px; height:44px; display:flex; align-items:center; justify-content:center; }
+  .car-icon svg { width:40px; height:40px; stroke:#2b2d33; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:stroke .15s; }
+  .car-opt:hover .car-icon svg, .car-opt.selected .car-icon svg { stroke:var(--red); }
+  .car-cat { font-size:13.5px; font-weight:700; color:var(--text); line-height:1.1; }
+  .car-models { font-size:11px; color:var(--muted); line-height:1.3; }
+  .car-check { position:absolute; top:9px; right:9px; width:18px; height:18px; border-radius:50%; border:2px solid var(--red);
+    display:flex; align-items:center; justify-content:center; opacity:0; transform:scale(.8); transition:.15s; }
+  .car-check::after { content:''; width:7px; height:7px; border-radius:50%; background:var(--red); }
+  .car-opt.selected .car-check { opacity:1; transform:scale(1); }
+
   .opt { border:1.5px solid var(--border); border-radius:12px; padding:14px 16px;
     cursor:pointer; background:#FAFAFB; text-align:left; font:500 14px 'Inter',sans-serif;
     color:var(--text); transition:all .15s; width:100%; display:flex; align-items:center; gap:12px; }
@@ -366,13 +383,83 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <!-- SCREEN 1: Which Toyota interests you? -->
       <div class="quiz-step active" id="screen-1">
         <div class="step-title">Which Toyota interests you?</div>
-        <div class="opts">
-          <button class="opt" onclick="selectOption(this); setVal('model','Corolla'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Corolla</div><div class="opt-sub">Sedan</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Urban Cruiser / RAV4'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Urban Cruiser &amp; RAV4</div><div class="opt-sub">Compact SUV</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Hilux / LC79'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Hilux &amp; LC79</div><div class="opt-sub">Pickups</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Fortuner / LC Prado / Land Cruiser 300'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Fortuner, LC Prado &amp; Land Cruiser 300</div><div class="opt-sub">SUV</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Hiace / Coaster'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Hiace &amp; Coaster</div><div class="opt-sub">Commercial</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Other'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Other</div><div class="opt-sub">Another model</div></span><span class="opt-check"></span></button>
+        <div class="car-grid">
+
+          <!-- Sedan -->
+          <button class="car-opt" onclick="selectOption(this); setVal('model','Corolla'); goTo('screen-2')">
+            <span class="car-icon"><svg viewBox="0 0 24 24">
+              <path d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+              <path d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+              <path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"/>
+            </svg></span>
+            <span class="car-cat">Sedan</span><span class="car-models">Corolla</span>
+            <span class="car-check"></span>
+          </button>
+
+          <!-- Compact SUV -->
+          <button class="car-opt" onclick="selectOption(this); setVal('model','Urban Cruiser / RAV4'); goTo('screen-2')">
+            <span class="car-icon"><svg viewBox="0 0 24 24">
+              <path d="M9 17h6"/>
+              <path d="M9 17a2 2 0 1 1 -4 0a2 2 0 0 1 4 0"/>
+              <path d="M19 17a2 2 0 1 1 -4 0a2 2 0 0 1 4 0"/>
+              <path d="M17 10l-2 -3"/>
+              <path d="M19 17h2v-5a2 2 0 0 0 -2 -2h-5v2h-2.586a1 1 0 0 1 -.707 -.293l-1.121 -1.121a2 2 0 0 0 -1.414 -.586h-4.172a1 1 0 0 0 -1 1v6h2"/>
+            </svg></span>
+            <span class="car-cat">Compact SUV</span><span class="car-models">Urban Cruiser, RAV4</span>
+            <span class="car-check"></span>
+          </button>
+
+          <!-- Pickups -->
+          <button class="car-opt" onclick="selectOption(this); setVal('model','Hilux / LC79'); goTo('screen-2')">
+            <span class="car-icon"><svg viewBox="0 0 24 24">
+              <path d="M5 5a2 2 0 0 1 2 -2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2a2 2 0 0 1 -2 -2l0 -2"/>
+              <path d="M5 17a2 2 0 0 1 2 -2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2a2 2 0 0 1 -2 -2l0 -2"/>
+              <path d="M15 5a2 2 0 0 1 2 -2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2a2 2 0 0 1 -2 -2l0 -2"/>
+              <path d="M15 17a2 2 0 0 1 2 -2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2a2 2 0 0 1 -2 -2l0 -2"/>
+              <path d="M9 18h6"/><path d="M9 6h6"/><path d="M12 6.5v-.5v12"/>
+            </svg></span>
+            <span class="car-cat">Pickups</span><span class="car-models">Hilux, LC79</span>
+            <span class="car-check"></span>
+          </button>
+
+          <!-- SUV -->
+          <button class="car-opt" onclick="selectOption(this); setVal('model','Fortuner / LC Prado / Land Cruiser 300'); goTo('screen-2')">
+            <span class="car-icon"><svg viewBox="0 0 24 24">
+              <path d="M5 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+              <path d="M16 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+              <path d="M5 9l2 -4h7.438a2 2 0 0 1 1.94 1.515l.622 2.485h3a2 2 0 0 1 2 2v3"/>
+              <path d="M10 9v-4"/><path d="M2 7v4"/>
+              <path d="M22.001 14.001a4.992 4.992 0 0 0 -4.001 -2.001a4.992 4.992 0 0 0 -4 2h-3a4.998 4.998 0 0 0 -8.003 .003"/>
+              <path d="M5 12v-3h13"/>
+            </svg></span>
+            <span class="car-cat">SUV</span><span class="car-models">Fortuner, LC Prado, LC 300</span>
+            <span class="car-check"></span>
+          </button>
+
+          <!-- Commercial -->
+          <button class="car-opt" onclick="selectOption(this); setVal('model','Hiace / Coaster'); goTo('screen-2')">
+            <span class="car-icon"><svg viewBox="0 0 24 24">
+              <path d="M4 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+              <path d="M16 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+              <path d="M4 17h-2v-11a1 1 0 0 1 1 -1h14a5 7 0 0 1 5 7v5h-2m-4 0h-8"/>
+              <path d="M16 5l1.5 7l4.5 0"/><path d="M2 10l15 0"/>
+              <path d="M7 5l0 5"/><path d="M12 5l0 5"/>
+            </svg></span>
+            <span class="car-cat">Commercial</span><span class="car-models">Hiace, Coaster</span>
+            <span class="car-check"></span>
+          </button>
+
+          <!-- Other -->
+          <button class="car-opt" onclick="selectOption(this); setVal('model','Other'); goTo('screen-2')">
+            <span class="car-icon"><svg viewBox="0 0 24 24">
+              <path d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+              <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+              <path d="M18 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+            </svg></span>
+            <span class="car-cat">Other</span><span class="car-models">Another model</span>
+            <span class="car-check"></span>
+          </button>
+
         </div>
       </div>
 
@@ -508,7 +595,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <footer>
   <!-- Replace with actual logo URL -->
-  <img src="https://toyotabycfao.ng/logo.png" alt="Toyota by CFAO" height="30">
+  <img src="https://toyota-cfao.netlify.app/logo.jpg" alt="Toyota by CFAO" height="30">
   <div>&copy; <span id="footer-year"></span> Toyota by CFAO. All rights reserved.</div>
 </footer>
 
