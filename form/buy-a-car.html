@@ -281,7 +281,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <nav>
   <a href="/" class="brand">
     <!-- Replace with actual logo URL -->
-    <img src="https://toyotabycfao.ng/logo.png" alt="Toyota by CFAO" height="34">
+    <img src="https://toyotabycfao.ng/logo.jpg" alt="Toyota by CFAO" height="34">
     <span>Toyota by CFAO</span>
   </a>
   <ul class="nav-links">
@@ -366,15 +366,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <!-- SCREEN 1: Which Toyota interests you? -->
       <div class="quiz-step active" id="screen-1">
         <div class="step-title">Which Toyota interests you?</div>
-        <div class="opts g4">
-          <button class="opt" onclick="selectOption(this); setVal('model','Corolla'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Corolla</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Hilux'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Hilux</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Prado'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Prado</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Fortuner'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Fortuner</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Hiace'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Hiace</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Land Cruiser'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Land Cruiser</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','RAV4'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">RAV4</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('model','Other'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
+        <div class="opts">
+          <button class="opt" onclick="selectOption(this); setVal('model','Corolla'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Corolla</div><div class="opt-sub">Sedan</div></span><span class="opt-check"></span></button>
+          <button class="opt" onclick="selectOption(this); setVal('model','Urban Cruiser / RAV4'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Urban Cruiser &amp; RAV4</div><div class="opt-sub">Compact SUV</div></span><span class="opt-check"></span></button>
+          <button class="opt" onclick="selectOption(this); setVal('model','Hilux / LC79'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Hilux &amp; LC79</div><div class="opt-sub">Pickups</div></span><span class="opt-check"></span></button>
+          <button class="opt" onclick="selectOption(this); setVal('model','Fortuner / LC Prado / Land Cruiser 300'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Fortuner, LC Prado &amp; Land Cruiser 300</div><div class="opt-sub">SUV</div></span><span class="opt-check"></span></button>
+          <button class="opt" onclick="selectOption(this); setVal('model','Hiace / Coaster'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Hiace &amp; Coaster</div><div class="opt-sub">Commercial</div></span><span class="opt-check"></span></button>
+          <button class="opt" onclick="selectOption(this); setVal('model','Other'); goTo('screen-2')"><span class="opt-text"><div class="opt-title">Other</div><div class="opt-sub">Another model</div></span><span class="opt-check"></span></button>
         </div>
       </div>
 
@@ -395,11 +393,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <button class="opt" onclick="selectOption(this); setVal('intent','Learn More'); goTo('screen-3')">
             <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="8" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="0.5"/></svg></span>
             <span class="opt-text"><div class="opt-title">Learn More</div><div class="opt-sub">Explore the range</div></span>
-            <span class="opt-check"></span>
-          </button>
-          <button class="opt" onclick="selectOption(this); goTo('disqualified')">
-            <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="8" x2="8" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span class="opt-text"><div class="opt-title">Just Browsing</div><div class="opt-sub">No pressure</div></span>
             <span class="opt-check"></span>
           </button>
         </div>
