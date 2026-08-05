@@ -21,662 +21,1500 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --red:#EB0A1E; --red-dark:#C70816;
-    --ink:#101114;
-    --surface-dark:#191A1E;
-    --text:#16171A; --muted:#5B6470;
-    --white:#ffffff; --bg-light:#F5F6F8; --border:#E4E4E7;
-    --shadow-md:0 10px 30px rgba(0,0,0,0.10);
-    --shadow-card:0 18px 50px rgba(0,0,0,0.35);
-  }
-  html { scroll-behavior:smooth; font-size:16px; }
-  body { font-family:'Inter',sans-serif; background:var(--white); color:var(--text);
-    line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
-    padding-top: env(safe-area-inset-top); }
-
-  /* NAV */
-  nav { display:flex; align-items:center; justify-content:space-between;
-    padding:0 48px; height:66px; background:rgba(255,255,255,0.96);
-    backdrop-filter:blur(12px); border-bottom:1px solid var(--border);
-    position:sticky; top:0; z-index:100; }
-  .brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
-  .brand img { height:34px; display:block; }
-  .brand span { font-size:19px; font-weight:800; color:var(--text); letter-spacing:-0.01em; }
-  .nav-links { display:flex; align-items:center; gap:28px; list-style:none; }
-  .nav-links a { font-size:14px; font-weight:500; color:var(--muted); text-decoration:none; transition:color .2s; }
-  .nav-links a:hover { color:var(--text); }
-  .nav-actions { display:flex; gap:10px; }
-  .nav-cta { background:var(--red); color:#fff; border:none; padding:9px 20px;
-    border-radius:9px; font:500 14px 'Inter',sans-serif; cursor:pointer;
-    text-decoration:none; display:inline-block; transition:background .2s; }
-  .nav-cta:hover { background:var(--red-dark); }
-  .callback-btn { background:transparent; color:var(--red); border:1.5px solid var(--red);
-    padding:8px 18px; border-radius:9px; font:500 14px 'Inter',sans-serif;
-    cursor:pointer; text-decoration:none; display:inline-block; transition:.2s; }
-  .callback-btn:hover { background:var(--red); color:#fff; }
-  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
-  .hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; }
-  .mobile-menu { display:none; flex-direction:column; background:var(--white);
-    border-bottom:1px solid var(--border); padding:14px 20px 18px; gap:4px; }
-  .mobile-menu.open { display:flex; }
-  .mobile-menu a { font-size:15px; color:var(--muted); text-decoration:none; padding:9px 0; border-bottom:1px solid var(--border); }
-  .mobile-menu a:last-child { border-bottom:none; }
-  .mobile-menu .mob-cta { margin-top:8px; background:var(--red); color:#fff; padding:12px 20px; border-radius:9px; text-align:center; font-weight:600; border-bottom:none; }
-
-  /* HERO */
-  .hero-wrap { position:relative; background:var(--ink); overflow:hidden;
-    padding:76px 24px 0; border-bottom:1px solid #26272B; min-height:600px; }
-  .hero-prado { position:absolute; left:-3%; bottom:0; width:min(720px,58%);
-    z-index:0; pointer-events:none; user-select:none;
-    filter:drop-shadow(0 30px 40px rgba(0,0,0,0.6)); }
-  .hero-prado-shadow { position:absolute; left:6%; bottom:26px; width:min(560px,46%);
-    height:40px; background:radial-gradient(ellipse at center, rgba(0,0,0,0.55), transparent 70%);
-    z-index:0; filter:blur(4px); }
-  .hero-scrim { position:absolute; inset:0; z-index:1; pointer-events:none;
-    background:
-      linear-gradient(180deg, var(--ink) 0%, rgba(16,17,20,0) 22%, rgba(16,17,20,0) 78%, var(--ink) 100%),
-      linear-gradient(90deg, rgba(16,17,20,0.35) 0%, rgba(16,17,20,0) 42%, rgba(16,17,20,0.55) 66%, var(--ink) 100%); }
-  .hero-inner { position:relative; z-index:2; max-width:1160px; margin:0 auto;
-    display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; padding-bottom:76px; }
-  .hero-left { color:#fff; max-width:500px; }
-  .hero-badge { display:inline-flex; align-items:center; gap:7px;
-    background:rgba(235,10,30,0.14); color:#ff8a8a; font-size:12px; font-weight:600;
-    letter-spacing:0.4px; padding:5px 13px; border-radius:100px; margin-bottom:18px; }
-  .hero-badge b { width:6px; height:6px; border-radius:50%; background:var(--red); display:inline-block; }
-  .hero-title { font-size:clamp(32px,4.6vw,46px); font-weight:800; line-height:1.08;
-    color:#fff; margin-bottom:14px; letter-spacing:-0.02em; }
-  .hero-title .hl { color:var(--red); }
-  .hero-sub { font-size:15.5px; color:rgba(255,255,255,0.72); line-height:1.6; margin-bottom:22px; }
-  .hero-trust { display:flex; flex-wrap:wrap; gap:14px 20px; margin-bottom:22px; }
-  .hero-trust span { display:inline-flex; align-items:center; gap:7px;
-    font-size:13px; font-weight:500; color:rgba(255,255,255,0.72); white-space:nowrap; }
-  .hero-trust svg { flex-shrink:0; }
-
-  /* Google review badge */
-  .hero-google-badge { display:inline-flex; align-items:center; gap:6px;
-    margin-left:8px; font-size:13px; color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.08);
-    padding:4px 12px; border-radius:100px; }
-  .hero-google-badge svg { width:16px; height:16px; }
-  .hero-google-badge .stars { color:#F4B400; }
-
-  .hero-callback-link { font-size:14px; color:#fff; text-decoration:none;
-    border-bottom:1px solid rgba(255,255,255,0.4); padding-bottom:1px;
-    cursor:pointer; background:none; border-left:none; border-right:none; border-top:none;
-    font-family:'Inter',sans-serif; transition:border-color .2s; }
-  .hero-callback-link:hover { border-color:var(--red); color:var(--red); }
-
-  /* QUIZ CARD */
-  .quiz-card { background:var(--white); border:1px solid rgba(255,255,255,0.08);
-    border-radius:18px; box-shadow:var(--shadow-card); padding:28px 24px;
-    max-width:430px; justify-self:end; width:100%; position:relative; overflow:hidden; }
-  /* Interactive background outline */
-  .quiz-card::after {
-    content:''; position:absolute; bottom:-60px; right:-60px;
-    width:200px; height:200px;
-    background: radial-gradient(circle at center, rgba(235,10,30,0.06) 0%, transparent 70%);
-    border-radius:50%; opacity:0; transition:opacity 0.4s;
-    pointer-events:none;
-  }
-  .quiz-card.step-active::after { opacity:1; }
-  .quiz-progress { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
-  .quiz-progress-bar { flex:1; height:4px; background:#E4E4E7; border-radius:2px; overflow:hidden; }
-  .quiz-progress-fill { height:100%; background:var(--red); border-radius:2px; width:0%; transition:width .4s ease; }
-  .quiz-progress-label { font-size:12px; color:var(--muted); white-space:nowrap; }
-  .quiz-step { display:none; }
-  .quiz-step.active { display:block; animation:fadeIn .2s ease; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
-  .step-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--red); margin-bottom:8px; }
-  .quiz-q { font-size:18px; font-weight:700; color:var(--text); line-height:1.3; margin-bottom:6px; }
-  .quiz-hint { font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.5; }
-
-  .opts { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
-  .opts.g2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .opt { border:1.5px solid var(--border); border-radius:12px; padding:14px 16px;
-    cursor:pointer; background:#FAFAFB; text-align:left; font:500 14px 'Inter',sans-serif;
-    color:var(--text); transition:all .15s; width:100%; display:flex; align-items:center; gap:12px; }
-  .opt:hover { border-color:var(--red); background:rgba(235,10,30,0.02); }
-  .opt.selected { border-color:var(--red); background:rgba(235,10,30,0.03); box-shadow:inset 0 0 0 1px rgba(235,10,30,0.1); }
-  .opt.selected .opt-check { opacity:1; transform:scale(1); }
-  .opt-icon { width:36px; height:36px; border-radius:10px; background:#F0F0F2;
-    display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .15s; }
-  .opt.selected .opt-icon { background:rgba(235,10,30,0.1); }
-  .opt-icon svg { stroke:var(--text); stroke-width:1.8; }
-  .opt.selected .opt-icon svg { stroke:var(--red); }
-  .opt-text { flex:1; }
-  .opt-title { font-size:14px; font-weight:600; }
-  .opt-sub { font-size:12px; color:var(--muted); margin-top:2px; }
-  .opt-check { width:20px; height:20px; border-radius:50%; border:2px solid var(--red);
-    display:flex; align-items:center; justify-content:center; opacity:0; transform:scale(0.8);
-    transition:opacity .15s, transform .15s; flex-shrink:0; }
-  .opt-check::after { content:''; width:8px; height:8px; border-radius:50%; background:var(--red); }
-
-  /* Inputs – 16px for iOS */
-  .qinput-group { margin-bottom:14px; }
-  .qinput-group label { display:block; font-size:12px; font-weight:600; color:var(--text); margin-bottom:5px; }
-  .qinput-group input, .qinput-group select, .qinput-group textarea {
-    width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px;
-    font:400 16px 'Inter',sans-serif; color:var(--text); background:var(--white);
-    outline:none; transition:border-color .2s, box-shadow .2s; }
-  .qinput-group input:focus, .qinput-group select:focus, .qinput-group textarea:focus {
-    border-color:var(--red); box-shadow:0 0 0 3px rgba(235,10,30,.1); }
-  .qinput-group input.error, .qinput-group select.error { border-color:#f87171; box-shadow:0 0 0 3px rgba(248,113,113,0.1); }
-  .field-error { font-size:12px; color:#e0384f; margin-top:4px; display:none; }
-  .field-error.show { display:block; }
-  .qrow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .phone-prefix { display:flex; align-items:stretch; }
-  .phone-prefix span { background:#F0F0F2; border:1.5px solid var(--border); border-right:none;
-    padding:10px 12px; border-radius:8px 0 0 8px; font-size:16px; color:var(--muted); display:flex; align-items:center; }
-  .phone-prefix input { border-radius:0 8px 8px 0; flex:1; }
-  .phone-prefix select { width:auto; border-radius:8px 0 0 8px; font-size:16px; padding:10px 8px; }
-  .hp-field { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
-
-  .next-btn { width:100%; padding:12px; background:var(--red); color:#fff; border:none;
-    border-radius:8px; font:500 16px 'Inter',sans-serif; cursor:pointer; margin-top:16px; transition:background .2s; }
-  .next-btn:hover { background:var(--red-dark); }
-  .next-btn:disabled { opacity:.5; cursor:not-allowed; }
-  .consent { font-size:11.5px; color:var(--muted); line-height:1.5; margin-top:10px; text-align:center; }
-  .consent a { color:var(--muted); text-decoration:underline; }
-  .back-btn { display:inline-flex; align-items:center; gap:4px; font-size:13px; color:var(--muted);
-    background:none; border:none; cursor:pointer; font-family:'Inter',sans-serif; padding:0; margin-top:10px; }
-  .back-btn:hover { color:var(--text); }
-
-  .rejection-card { text-align:center; padding:24px 20px; }
-  .rejection-icon { width:48px; height:48px; border-radius:12px; background:rgba(235,10,30,0.06);
-    display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
-  .rejection-icon svg { stroke:var(--red); stroke-width:1.8; }
-  .rejection-card h3 { font-size:20px; font-weight:700; color:var(--text); margin-bottom:8px; }
-  .rejection-card p { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:20px; }
-  .btn-outline { display:inline-flex; align-items:center; gap:6px; background:var(--ink); color:#fff;
-    border:none; padding:11px 22px; border-radius:8px; font:500 14px 'Inter',sans-serif;
-    cursor:pointer; text-decoration:none; transition:background .2s; }
-  .btn-outline:hover { background:#2a2b30; }
-  .ty-loading { text-align:center; padding:24px 20px; }
-  .ty-loading p { color:var(--muted); }
-
-  /* Modal */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
-    z-index:1000; align-items:center; justify-content:center; }
-  .modal-overlay.active { display:flex; }
-  .modal-card { background:#fff; border-radius:16px; padding:32px 24px; max-width:420px; width:90%;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2); position:relative; }
-  .modal-close { position:absolute; top:14px; right:14px; background:none; border:none;
-    font-size:24px; color:var(--muted); cursor:pointer; }
-  .modal-title { font-size:20px; font-weight:700; margin-bottom:8px; }
-  .modal-sub { font-size:14px; color:var(--muted); margin-bottom:20px; }
-  .modal-form .qinput-group { margin-bottom:14px; }
-  .modal-submit-btn { width:100%; padding:12px; background:var(--red); color:#fff; border:none;
-    border-radius:8px; font:500 16px 'Inter',sans-serif; cursor:pointer; margin-top:8px; }
-
-  /* SECTIONS */
-  .section { padding:72px 48px; max-width:1160px; margin:0 auto; }
-  .section-sm { padding:52px 48px; max-width:1160px; margin:0 auto; }
-  .eyebrow { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--red); margin-bottom:10px; }
-  .s-title { font-size:28px; font-weight:800; color:var(--text); margin-bottom:12px; line-height:1.2; letter-spacing:-0.01em; }
-  .s-sub { font-size:16px; color:var(--muted); line-height:1.7; max-width:600px; }
-
-  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-  @media(max-width:768px){ .grid-3{grid-template-columns:repeat(2,1fr);} }
-  @media(max-width:480px){ .grid-3{grid-template-columns:1fr;} }
-
-  .service-card { background:var(--white); border:1px solid var(--border); border-radius:16px;
-    padding:30px 24px 24px; text-decoration:none; color:inherit; display:block; transition:all .2s;
-    position:relative; overflow:hidden; }
-  .service-card:hover { border-color:var(--red); box-shadow:var(--shadow-md); transform:translateY(-2px); }
-  .card-icon-large { width:54px; height:54px; border-radius:14px; background:rgba(235,10,30,0.05);
-    display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
-  .card-icon-large svg { stroke:var(--red); stroke-width:1.5; width:30px; height:30px; }
-  .service-card h3 { font-size:15px; font-weight:700; margin-bottom:6px; color:var(--text); }
-  .service-card p { font-size:13px; color:var(--muted); line-height:1.5; }
-  .card-arrow { position:absolute; top:20px; right:20px; width:28px; height:28px; border-radius:50%;
-    background:#F0F0F2; display:flex; align-items:center; justify-content:center; opacity:0;
-    transform:translateX(-4px); transition:opacity .2s, transform .2s; }
-  .service-card:hover .card-arrow { opacity:1; transform:translateX(0); }
-  .card-arrow svg { stroke:var(--text); stroke-width:2; width:14px; height:14px; }
-
-  .cat-tile { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:22px 22px; }
-  .cat-tile h3 { font-size:15px; font-weight:700; color:var(--text); margin-bottom:5px; }
-  .cat-tile p { font-size:13px; color:var(--muted); line-height:1.5; }
-  .cat-tile .tag { display:inline-block; font-size:11px; font-weight:600; color:var(--red);
-    background:rgba(235,10,30,0.06); padding:2px 9px; border-radius:100px; margin-bottom:12px; }
-
-  .btn-link { display:inline-flex; align-items:center; gap:6px; background:var(--ink); color:#fff;
-    border:none; padding:12px 24px; border-radius:8px; font:500 14px 'Inter',sans-serif;
-    cursor:pointer; text-decoration:none; transition:background .2s; }
-  .btn-link:hover { background:#2a2b30; }
-  .btn-link.wo { background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.4); }
-  .btn-link.wo:hover { background:rgba(255,255,255,0.1); border-color:#fff; }
-
-  .trust-bar { border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-    padding:16px 48px; display:flex; justify-content:center; gap:40px; font-size:14px;
-    font-weight:500; color:var(--text); flex-wrap:wrap; background:var(--white); }
-  .trust-bar span { display:inline-flex; align-items:center; gap:8px; }
-
-  .bg-white{background:var(--white);} .bg-light{background:var(--bg-light);}
-  .bg-dark{background:var(--ink); color:#fff;} .bg-dark .s-title{color:#fff;} .bg-dark .s-sub{color:rgba(255,255,255,0.65);}
-
-  .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .stat { background:var(--surface-dark); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:24px 22px; }
-  .stat .num { font-size:30px; font-weight:800; color:#fff; letter-spacing:-0.02em; line-height:1; margin-bottom:6px; }
-  .stat .num em { color:var(--red); font-style:normal; }
-  .stat .lbl { font-size:13px; color:rgba(255,255,255,0.6); }
-  .dark-card { background:var(--surface-dark); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:24px 22px; }
-  .dark-card h3 { color:#fff; font-size:15px; font-weight:700; margin-bottom:6px; }
-  .dark-card p { color:rgba(255,255,255,0.55); font-size:13px; line-height:1.5; }
-
-  .cta-banner { background:var(--surface-dark); padding:24px 48px; text-align:center; font-size:15px; color:#fff; }
-  .cta-banner a { color:var(--red); font-weight:600; text-decoration:underline; }
-
-  .faq-item { border-bottom:1px solid var(--border); padding-bottom:12px; }
-  .faq-item strong { font-size:15px; }
-  .faq-item span { color:var(--muted); font-size:14px; }
-
-  footer { border-top:1px solid var(--border); padding:28px 48px; display:flex;
-    justify-content:space-between; align-items:center; font-size:13px; color:var(--muted); background:var(--white); }
-  footer img { height:30px; display:block; }
-
-  @media(max-width:900px){
-    nav { padding:0 20px; }
-    .nav-links { display:none; }
-    .callback-btn { display:none; }
-    .hamburger { display:flex; }
-  }
-  @media(max-width:768px){
-    .hero-wrap { padding:36px 20px 0; min-height:auto; }
-    .hero-inner { grid-template-columns:1fr; gap:20px; padding-bottom:32px; }
-    .hero-left { order:1; }
-    .quiz-card { order:2; justify-self:center; max-width:100%; }
-    .hero-prado { display:none; }
-    .hero-prado-shadow { display:none; }
-    .hero-scrim { background:linear-gradient(180deg, var(--ink) 0%, rgba(16,17,20,0) 60%, var(--ink) 100%); }
-    .hero-badge { margin-bottom:8px; font-size:10.5px; padding:3px 9px; }
-    .hero-title { font-size:24px; margin-bottom:6px; }
-    .hero-sub { font-size:13px; margin-bottom:10px; }
-    .hero-trust { gap:6px 10px; margin-bottom:10px; justify-content:center; }
-    .hero-trust span { font-size:11px; }
-    .hero-google-badge { font-size:11px; padding:3px 9px; margin-left:4px; }
-    .hero-callback-link { font-size:12px; }
-    .section, .section-sm { padding:52px 20px; }
-    .trust-bar { padding:14px 16px; gap:14px; justify-content:center; }
-    .stat-grid { grid-template-columns:1fr 1fr; }
-    footer { padding:22px 20px; flex-direction:column; gap:12px; text-align:center; }
-    .qrow { grid-template-columns:1fr; }
-    /* Force dark section two-column grid to stack on mobile */
-    .bg-dark > div[style*="grid-template-columns:1fr 1fr"] {
-      grid-template-columns: 1fr !important;
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
     }
-    .stat, .dark-card { overflow-wrap: break-word; word-break: break-word; }
-  }
-  @media(max-width:480px){
-    .nav-cta { display:none; }
-    .opts.g2 { grid-template-columns:1fr; }
-    .hero-title { font-size:22px; }
-  }
-  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important; scroll-behavior:auto !important;} }
+
+    :root {
+        --red: #EB0A1E;
+        --red-dark: #C70816;
+        --ink: #101114;
+        --surface-dark: #191A1E;
+        --text: #16171A;
+        --muted: #5B6470;
+        --white: #ffffff;
+        --bg-light: #F5F6F8;
+        --border: #E4E4E7;
+        --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.10);
+        --shadow-card: 0 18px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--white);
+        color: var(--text);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        padding-top: env(safe-area-inset-top);
+    }
+
+    /* NAV */
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 48px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+    }
+    .brand img {
+        height: 30px;
+        display: block;
+    }
+    .brand span {
+        font-size: 1.125rem;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -0.01em;
+    }
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        list-style: none;
+    }
+    .nav-links a {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color .2s;
+    }
+    .nav-links a:hover {
+        color: var(--text);
+    }
+    .nav-actions {
+        display: flex;
+        gap: 10px;
+    }
+    .callback-btn {
+        background: transparent;
+        color: var(--red);
+        border: 1.5px solid var(--red);
+        padding: 6px 14px;
+        border-radius: 7px;
+        font: 500 0.8125rem 'Inter', sans-serif;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: .2s;
+    }
+    .callback-btn:hover {
+        background: var(--red);
+        color: #fff;
+    }
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
+    }
+    .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+    }
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 20px 18px;
+        gap: 4px;
+    }
+    .mobile-menu.open {
+        display: flex;
+    }
+    .mobile-menu a {
+        font-size: 0.9375rem;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:last-child {
+        border-bottom: none;
+    }
+    .mobile-menu .mob-cta {
+        margin-top: 8px;
+        background: var(--red);
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 9px;
+        text-align: center;
+        font-weight: 600;
+        border-bottom: none;
+    }
+
+    /* HERO */
+    .hero-wrap {
+        position: relative;
+        background: var(--ink);
+        overflow: hidden;
+        padding: 36px 24px;
+        border-bottom: 1px solid #26272B;
+    }
+    .hero-prado {
+        position: absolute;
+        left: -4%;
+        bottom: 0;
+        width: min(520px, 42%);
+        z-index: 0;
+        pointer-events: none;
+        user-select: none;
+        opacity: 0.75;
+        filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
+    }
+    .hero-prado-shadow {
+        position: absolute;
+        left: 5%;
+        bottom: 18px;
+        width: min(400px, 34%);
+        height: 30px;
+        background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.5), transparent 70%);
+        z-index: 0;
+        filter: blur(4px);
+    }
+    .hero-scrim {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background:
+            linear-gradient(180deg, var(--ink) 0%, rgba(16, 17, 20, 0) 18%, rgba(16, 17, 20, 0) 82%, var(--ink) 100%),
+            linear-gradient(90deg, rgba(16, 17, 20, 0.6) 0%, rgba(16, 17, 20, 0.15) 38%, rgba(16, 17, 20, 0.55) 62%, var(--ink) 100%);
+    }
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        max-width: 1080px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+        align-items: start;
+    }
+    .hero-left {
+        color: #fff;
+        max-width: 440px;
+        padding-top: 0;
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(235, 10, 30, 0.14);
+        color: #ff8a8a;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        padding: 3px 10px;
+        border-radius: 100px;
+        margin-bottom: 10px;
+    }
+    .hero-badge b {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--red);
+        display: inline-block;
+    }
+    .hero-title {
+        font-size: clamp(1.5rem, 3.8vw, 2rem);
+        font-weight: 800;
+        line-height: 1.08;
+        color: #fff;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+    }
+    .hero-title .hl {
+        color: var(--red);
+    }
+    .hero-sub {
+        font-size: 0.84375rem;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.5;
+        margin-bottom: 14px;
+    }
+    .hero-trust {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 10px;
+    }
+    .hero-trust span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.72);
+        white-space: nowrap;
+    }
+    .hero-trust svg {
+        flex-shrink: 0;
+        width: 13px;
+        height: 13px;
+    }
+    .hero-google-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.6875rem;
+        color: rgba(255, 255, 255, 0.65);
+        background: rgba(255, 255, 255, 0.06);
+        padding: 2px 8px;
+        border-radius: 100px;
+    }
+    .hero-google-badge svg {
+        width: 12px;
+        height: 12px;
+    }
+    .hero-google-badge .stars {
+        color: #F4B400;
+    }
+
+    /* QUIZ CARD */
+    .quiz-card {
+        background: var(--white);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card);
+        padding: 20px 20px;
+        max-width: 430px;
+        justify-self: end;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    .quiz-card::after {
+        content: '';
+        position: absolute;
+        bottom: -60px;
+        right: -60px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle at center, rgba(235, 10, 30, 0.06) 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+    }
+    .quiz-card.step-active::after {
+        opacity: 1;
+    }
+    .quiz-progress {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+    .quiz-progress-bar {
+        flex: 1;
+        height: 3px;
+        background: #E4E4E7;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .quiz-progress-fill {
+        height: 100%;
+        background: var(--red);
+        border-radius: 2px;
+        width: 0%;
+        transition: width .4s ease;
+    }
+    .quiz-progress-label {
+        font-size: 0.6875rem;
+        color: var(--muted);
+        white-space: nowrap;
+    }
+    .quiz-step {
+        display: none;
+    }
+    .quiz-step.active {
+        display: block;
+        animation: fadeIn .25s ease;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .step-label {
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--red);
+        margin-bottom: 4px;
+    }
+    .quiz-q {
+        font-size: 1.0625rem;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.3;
+        margin-bottom: 4px;
+    }
+    .quiz-hint {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 14px;
+        line-height: 1.4;
+    }
+
+    .opts {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 4px;
+    }
+    .opts.g2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .opts.g4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+    .opt {
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+        cursor: pointer;
+        background: #FAFAFB;
+        text-align: left;
+        font: 500 0.875rem 'Inter', sans-serif;
+        color: var(--text);
+        transition: all .15s;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .opt:hover {
+        border-color: var(--red);
+        background: rgba(235, 10, 30, 0.02);
+    }
+    .opt.selected {
+        border-color: var(--red);
+        background: rgba(235, 10, 30, 0.03);
+        box-shadow: inset 0 0 0 1px rgba(235, 10, 30, 0.1);
+    }
+    .opt.selected .opt-check {
+        opacity: 1;
+        transform: scale(1);
+    }
+    .opt-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #F0F0F2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background .15s;
+    }
+    .opt.selected .opt-icon {
+        background: rgba(235, 10, 30, 0.1);
+    }
+    .opt-icon svg {
+        stroke: var(--text);
+        stroke-width: 1.8;
+        width: 18px;
+        height: 18px;
+    }
+    .opt.selected .opt-icon svg {
+        stroke: var(--red);
+    }
+    .opt-text {
+        flex: 1;
+    }
+    .opt-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    .opt-sub {
+        font-size: 0.6875rem;
+        color: var(--muted);
+        margin-top: 1px;
+    }
+    .opt-check {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid var(--red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity .15s, transform .15s;
+        flex-shrink: 0;
+    }
+    .opt-check::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--red);
+    }
+
+    /* Inputs */
+    .qinput-group {
+        margin-bottom: 10px;
+    }
+    .qinput-group label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+    }
+    .qinput-group input,
+    .qinput-group select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font: 400 1rem 'Inter', sans-serif;
+        color: var(--text);
+        background: var(--white);
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+    .qinput-group input:focus,
+    .qinput-group select:focus {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px rgba(235, 10, 30, .1);
+    }
+    .qinput-group input.error,
+    .qinput-group select.error {
+        border-color: #f87171;
+        box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.1);
+    }
+    .field-error {
+        font-size: 0.6875rem;
+        color: #e0384f;
+        margin-top: 2px;
+        display: none;
+    }
+    .field-error.show {
+        display: block;
+    }
+    .qrow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .phone-prefix {
+        display: flex;
+        align-items: stretch;
+    }
+    .phone-prefix span {
+        background: #F0F0F2;
+        border: 1.5px solid var(--border);
+        border-right: none;
+        padding: 10px 12px;
+        border-radius: 8px 0 0 8px;
+        font-size: 1rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+    }
+    .phone-prefix input {
+        border-radius: 0 8px 8px 0;
+        flex: 1;
+    }
+    .hp-field {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+    }
+
+    .next-btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font: 600 0.9375rem 'Inter', sans-serif;
+        cursor: pointer;
+        margin-top: 14px;
+        transition: background .2s;
+    }
+    .next-btn:hover {
+        background: var(--red-dark);
+    }
+    .next-btn:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+    .consent {
+        font-size: 0.6875rem;
+        color: var(--muted);
+        line-height: 1.3;
+        margin-top: 8px;
+        text-align: center;
+    }
+    .consent a {
+        color: var(--muted);
+        text-decoration: underline;
+    }
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.8125rem;
+        color: var(--muted);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        padding: 0;
+        margin-top: 10px;
+    }
+    .back-btn:hover {
+        color: var(--text);
+    }
+
+    .rejection-card {
+        text-align: center;
+        padding: 20px 16px;
+    }
+    .rejection-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: rgba(235, 10, 30, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 12px;
+    }
+    .rejection-icon svg {
+        stroke: var(--red);
+        stroke-width: 1.8;
+    }
+    .rejection-card h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+    }
+    .rejection-card p {
+        font-size: 0.8125rem;
+        color: var(--muted);
+        line-height: 1.5;
+        margin-bottom: 16px;
+    }
+    .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--ink);
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 7px;
+        font: 500 0.8125rem 'Inter', sans-serif;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .2s;
+    }
+    .btn-outline:hover {
+        background: #2a2b30;
+    }
+    .ty-loading {
+        text-align: center;
+        padding: 20px 16px;
+    }
+    .ty-loading p {
+        color: var(--muted);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-overlay.active {
+        display: flex;
+    }
+    .modal-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 22px 20px;
+        max-width: 380px;
+        width: 90%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+    .modal-close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        color: var(--muted);
+        cursor: pointer;
+    }
+    .modal-title {
+        font-size: 1rem;
+        font-weight: 800;
+        margin-bottom: 3px;
+    }
+    .modal-sub {
+        font-size: 0.8125rem;
+        color: var(--muted);
+        margin-bottom: 14px;
+    }
+    .modal-form .qinput-group {
+        margin-bottom: 8px;
+    }
+    .modal-submit-btn {
+        width: 100%;
+        padding: 10px;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        font: 600 0.9375rem 'Inter', sans-serif;
+        cursor: pointer;
+        margin-top: 4px;
+        transition: background .2s;
+    }
+    .modal-submit-btn:hover {
+        background: var(--red-dark);
+    }
+
+    /* SECTIONS */
+    .section {
+        padding: 72px 48px;
+        max-width: 1160px;
+        margin: 0 auto;
+    }
+    .section-sm {
+        padding: 52px 48px;
+        max-width: 1160px;
+        margin: 0 auto;
+    }
+    .eyebrow {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--red);
+        margin-bottom: 10px;
+    }
+    .s-title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 12px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+    }
+    .s-sub {
+        font-size: 1rem;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 600px;
+    }
+    .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    @media(max-width:768px) {
+        .grid-3 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media(max-width:480px) {
+        .grid-3 {
+            grid-template-columns: 1fr;
+        }
+    }
+    .service-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 30px 24px 24px;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: all .2s;
+        position: relative;
+        overflow: hidden;
+    }
+    .service-card:hover {
+        border-color: var(--red);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+    .card-icon-large {
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        background: rgba(235, 10, 30, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+    .card-icon-large svg {
+        stroke: var(--red);
+        stroke-width: 1.5;
+        width: 30px;
+        height: 30px;
+    }
+    .service-card h3 {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: var(--text);
+    }
+    .service-card p {
+        font-size: 0.8125rem;
+        color: var(--muted);
+        line-height: 1.5;
+    }
+    .card-arrow {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #F0F0F2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateX(-4px);
+        transition: opacity .2s, transform .2s;
+    }
+    .service-card:hover .card-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    .card-arrow svg {
+        stroke: var(--text);
+        stroke-width: 2;
+        width: 14px;
+        height: 14px;
+    }
+    .cat-tile {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 22px 22px;
+    }
+    .cat-tile h3 {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 5px;
+    }
+    .cat-tile p {
+        font-size: 0.8125rem;
+        color: var(--muted);
+        line-height: 1.5;
+    }
+    .cat-tile .tag {
+        display: inline-block;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: var(--red);
+        background: rgba(235, 10, 30, 0.06);
+        padding: 2px 9px;
+        border-radius: 100px;
+        margin-bottom: 12px;
+    }
+    .btn-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--ink);
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font: 500 0.875rem 'Inter', sans-serif;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .2s;
+    }
+    .btn-link:hover {
+        background: #2a2b30;
+    }
+    .btn-link.wo {
+        background: transparent;
+        color: #fff;
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
+    }
+    .btn-link.wo:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #fff;
+    }
+    .trust-bar {
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 48px;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text);
+        flex-wrap: wrap;
+        background: var(--white);
+    }
+    .trust-bar span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .bg-white {
+        background: var(--white);
+    }
+    .bg-light {
+        background: var(--bg-light);
+    }
+    .bg-dark {
+        background: var(--ink);
+        color: #fff;
+    }
+    .bg-dark .s-title {
+        color: #fff;
+    }
+    .bg-dark .s-sub {
+        color: rgba(255, 255, 255, 0.65);
+    }
+    .stat-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+    .stat {
+        background: var(--surface-dark);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 24px 22px;
+    }
+    .stat .num {
+        font-size: 1.875rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        margin-bottom: 6px;
+    }
+    .stat .num em {
+        color: var(--red);
+        font-style: normal;
+    }
+    .stat .lbl {
+        font-size: 0.8125rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+    .dark-card {
+        background: var(--surface-dark);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 24px 22px;
+    }
+    .dark-card h3 {
+        color: #fff;
+        font-size: 0.9375rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+    .dark-card p {
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 0.8125rem;
+        line-height: 1.5;
+    }
+    .cta-banner {
+        background: var(--surface-dark);
+        padding: 24px 48px;
+        text-align: center;
+        font-size: 0.9375rem;
+        color: #fff;
+    }
+    .cta-banner a {
+        color: var(--red);
+        font-weight: 600;
+        text-decoration: underline;
+    }
+    .faq-item {
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 12px;
+    }
+    .faq-item strong {
+        font-size: 0.9375rem;
+    }
+    .faq-item span {
+        color: var(--muted);
+        font-size: 0.875rem;
+    }
+    footer {
+        border-top: 1px solid var(--border);
+        padding: 28px 48px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8125rem;
+        color: var(--muted);
+        background: var(--white);
+    }
+    footer img {
+        height: 30px;
+        display: block;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+        nav {
+            padding: 0 20px;
+        }
+        .nav-links {
+            display: none;
+        }
+        .callback-btn {
+            display: none;
+        }
+        .hamburger {
+            display: flex;
+        }
+    }
+    @media(max-width:768px) {
+        .hero-wrap {
+            padding: 24px 20px 28px;
+        }
+        .hero-inner {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .hero-left {
+            order: 1;
+            max-width: 100%;
+            text-align: center;
+        }
+        .hero-trust {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 14px;
+        }
+        .quiz-card {
+            order: 2;
+            justify-self: center;
+            max-width: 100%;
+        }
+        .hero-prado,
+        .hero-prado-shadow,
+        .hero-scrim {
+            display: none;
+        }
+        .section,
+        .section-sm {
+            padding: 52px 20px;
+        }
+        .trust-bar {
+            padding: 14px 16px;
+            gap: 14px;
+            justify-content: center;
+        }
+        .stat-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        footer {
+            padding: 22px 20px;
+            flex-direction: column;
+            gap: 12px;
+            text-align: center;
+        }
+        .qrow {
+            grid-template-columns: 1fr;
+        }
+        .opts.g2 {
+            grid-template-columns: 1fr;
+        }
+        .opts.g4 {
+            grid-template-columns: 1fr 1fr;
+        }
+        .bg-dark>div[style*="grid-template-columns:1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
+        .stat,
+        .dark-card {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+    }
+    @media(max-width:480px) {
+        .opts.g2 {
+            grid-template-columns: 1fr;
+        }
+        .opts.g4 {
+            grid-template-columns: 1fr;
+        }
+        .qrow {
+            grid-template-columns: 1fr;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation: none !important;
+            transition: none !important;
+            scroll-behavior: auto !important;
+        }
+    }
 </style>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MCKPL6S3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav>
-  <a href="/" class="brand">
-    <img src="logo.png" alt="Toyota by CFAO" height="34">
-    <span>Toyota by CFAO</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#quiz-area">Enquiry</a></li>
-  </ul>
-  <div class="nav-actions">
-    <a href="#quiz-area" class="nav-cta">Start Enquiry</a>
-    <button class="callback-btn" onclick="openCallbackModal()">Request a Callback</button>
-  </div>
-  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <a href="/" class="brand">
+        <img src="https://toyotabycfao.ng/logo.png" alt="Toyota by CFAO">
+        <span>Toyota by CFAO</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#quiz-area">Enquiry</a></li>
+    </ul>
+    <div class="nav-actions">
+        <button class="callback-btn" onclick="openCallbackModal()">Request a Callback</button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobile-menu">
-  <a href="/">Home</a>
-  <a href="#services">Services</a>
-  <a href="#quiz-area">Enquiry</a>
-  <a href="#quiz-area" class="mob-cta">Start Enquiry</a>
-  <a href="#" class="mob-cta" onclick="openCallbackModal(); return false;">Request a Callback</a>
+    <a href="/">Home</a>
+    <a href="#services">Services</a>
+    <a href="#quiz-area">Enquiry</a>
+    <a href="#quiz-area" class="mob-cta">Start Enquiry</a>
+    <a href="#" onclick="openCallbackModal(); return false;">Request a Callback</a>
 </div>
 
-<!-- Callback Modal (with name fields, editable prefix) -->
+<!-- Callback Modal -->
 <div class="modal-overlay" id="callback-modal">
-  <div class="modal-card">
-    <button class="modal-close" onclick="closeCallbackModal()">&times;</button>
-    <div class="modal-title">Request a Callback</div>
-    <div class="modal-sub">Tell us what you need – we'll call you right away.</div>
-    <form class="modal-form" onsubmit="return false;">
-      <input type="text" class="hp-field" id="cb-company" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="qinput-group">
-        <label>What do you need help with? *</label>
-        <select id="callback-intent" onchange="document.getElementById('callback-intent-error').classList.remove('show')">
-          <option value="">Select…</option>
-          <option value="Buy a Car">Buy a Car</option>
-          <option value="Vehicle Service">Vehicle Service</option>
-          <option value="Genuine Parts">Genuine Parts</option>
-          <option value="Oil & Fluids">Oil & Fluids</option>
-          <option value="General Enquiry">General Enquiry</option>
-        </select>
-        <div class="field-error" id="callback-intent-error">Please select an option.</div>
-      </div>
-      <div class="qrow">
-        <div class="qinput-group">
-          <label>First name *</label>
-          <input type="text" id="callback-fname" placeholder="Chinedu" autocomplete="given-name" oninput="document.getElementById('callback-fname-error').classList.remove('show')">
-          <div class="field-error" id="callback-fname-error">Required</div>
-        </div>
-        <div class="qinput-group">
-          <label>Last name</label>
-          <input type="text" id="callback-lname" placeholder="Adekunle" autocomplete="family-name">
-        </div>
-      </div>
-      <div class="qinput-group">
-        <label>Email *</label>
-        <input type="email" id="callback-email" placeholder="chinedu.ade@email.com" autocomplete="email" oninput="document.getElementById('callback-email-error').classList.remove('show')">
-        <div class="field-error" id="callback-email-error">Valid email required</div>
-      </div>
-      <div class="qinput-group">
-        <label>Your Phone Number (WhatsApp) *</label>
-        <div class="phone-prefix">
-          <select id="callback-phone-prefix" onchange="handlePrefixChange('callback-phone-prefix','callback-phone-other','callback-phone')">
-            <option value="+234">+234</option>
-            <option value="+233">+233</option>
-            <option value="+1">+1</option>
-            <option value="+44">+44</option>
-            <option value="other">Other</option>
-          </select>
-          <input type="text" id="callback-phone-other" placeholder="Code" style="display:none; width:80px; border-radius:0;" oninput="document.getElementById('callback-phone').value=this.value">
-          <input type="tel" id="callback-phone" placeholder="801 234 5678" inputmode="numeric" autocomplete="tel" oninput="document.getElementById('callback-phone-error').classList.remove('show')">
-        </div>
-        <div class="field-error" id="callback-phone-error">Valid phone number required</div>
-      </div>
-      <div class="qinput-group">
-        <label>How soon do you want the callback? *</label>
-        <select id="callback-timing" onchange="document.getElementById('callback-timing-error').classList.remove('show')">
-          <option value="">Select…</option>
-          <option value="Immediately">Immediately</option>
-          <option value="Within 1 hour">Within 1 hour</option>
-          <option value="Today">Today</option>
-          <option value="Tomorrow">Tomorrow</option>
-        </select>
-        <div class="field-error" id="callback-timing-error">Please select timing.</div>
-      </div>
-      <button type="button" class="modal-submit-btn" onclick="submitCallback()">Request Callback</button>
-      <p class="consent">By submitting, you agree to be contacted by Toyota by CFAO.</p>
-    </form>
-  </div>
+    <div class="modal-card">
+        <button class="modal-close" onclick="closeCallbackModal()">&times;</button>
+        <div class="modal-title">Request a Callback</div>
+        <div class="modal-sub">Tell us what you need – we'll call you right away.</div>
+        <form class="modal-form" onsubmit="return false;">
+            <input type="text" class="hp-field" id="cb-company" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="qinput-group">
+                <label>What do you need help with? *</label>
+                <select id="callback-intent" onchange="document.getElementById('callback-intent-error').classList.remove('show')">
+                    <option value="">Select…</option>
+                    <option value="Buy a Car">Buy a Car</option>
+                    <option value="Vehicle Service">Vehicle Service</option>
+                    <option value="Genuine Parts">Genuine Parts</option>
+                    <option value="Oil & Fluids">Oil & Fluids</option>
+                    <option value="General Enquiry">General Enquiry</option>
+                </select>
+                <div class="field-error" id="callback-intent-error">Please select an option.</div>
+            </div>
+            <div class="qrow">
+                <div class="qinput-group">
+                    <label>First name *</label>
+                    <input type="text" id="callback-fname" placeholder="Chinedu" autocomplete="given-name" oninput="document.getElementById('callback-fname-error').classList.remove('show')">
+                    <div class="field-error" id="callback-fname-error">Required</div>
+                </div>
+                <div class="qinput-group">
+                    <label>Last name</label>
+                    <input type="text" id="callback-lname" placeholder="Adekunle" autocomplete="family-name">
+                </div>
+            </div>
+            <div class="qinput-group">
+                <label>Email *</label>
+                <input type="email" id="callback-email" placeholder="chinedu.ade@email.com" autocomplete="email" oninput="document.getElementById('callback-email-error').classList.remove('show')">
+                <div class="field-error" id="callback-email-error">Valid email required</div>
+            </div>
+            <div class="qinput-group">
+                <label>Your Phone Number (WhatsApp) *</label>
+                <div class="phone-prefix">
+                    <select id="callback-phone-prefix" onchange="handlePrefixChange('callback-phone-prefix','callback-phone-other','callback-phone')">
+                        <option value="+234">+234</option>
+                        <option value="+233">+233</option>
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="callback-phone-other" placeholder="Code" style="display:none; width:80px; border-radius:0;" oninput="document.getElementById('callback-phone').value=this.value">
+                    <input type="tel" id="callback-phone" placeholder="801 234 5678" inputmode="numeric" autocomplete="tel" oninput="document.getElementById('callback-phone-error').classList.remove('show')">
+                </div>
+                <div class="field-error" id="callback-phone-error">Valid phone number required</div>
+            </div>
+            <div class="qinput-group">
+                <label>How soon do you want the callback? *</label>
+                <select id="callback-timing" onchange="document.getElementById('callback-timing-error').classList.remove('show')">
+                    <option value="">Select…</option>
+                    <option value="Immediately">Immediately</option>
+                    <option value="Within 1 hour">Within 1 hour</option>
+                    <option value="Today">Today</option>
+                    <option value="Tomorrow">Tomorrow</option>
+                </select>
+                <div class="field-error" id="callback-timing-error">Please select timing.</div>
+            </div>
+            <button type="button" class="modal-submit-btn" onclick="submitCallback()">Request Callback</button>
+            <p class="consent">By submitting, you agree to be contacted by Toyota by CFAO.</p>
+        </form>
+    </div>
 </div>
 
 <!-- HERO + QUIZ -->
 <div class="hero-wrap" id="quiz-area">
-  <div class="hero-prado-shadow"></div>
-  <img class="hero-prado" src="prado.png" alt="Toyota Land Cruiser Prado" onerror="this.style.display='none'">
-  <div class="hero-scrim"></div>
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-badge"><b></b> Official Toyota Distributor · Nigeria</div>
-      <h1 class="hero-title">Expert support for your Toyota, by <span class="hl">Toyota by CFAO</span></h1>
-      <p class="hero-sub">Buy a new car, book a service, or order genuine parts. We'll connect you directly to the right team.</p>
-      <div class="hero-trust">
-        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Official Distributor</span>
-        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Genuine Parts</span>
-        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Expert Technicians</span>
-        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>6 Dealerships</span>
-        <span class="hero-google-badge">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          <span class="stars">★★★★★</span> 4.7 (76 reviews)
-        </span>
-      </div>
-      <button class="hero-callback-link" onclick="openCallbackModal()">Or request a callback &rarr;</button>
+    <div class="hero-prado-shadow"></div>
+    <img class="hero-prado" src="prado.png" alt="Toyota Land Cruiser Prado" onerror="this.style.display='none'">
+    <div class="hero-scrim"></div>
+    <div class="hero-inner">
+        <div class="hero-left">
+            <div class="hero-badge"><b></b> Official Toyota Distributor · Nigeria</div>
+            <h1 class="hero-title">Expert support for your <span class="hl">Toyota</span></h1>
+            <p class="hero-sub">Tell us what you need and we'll connect you to the right team.</p>
+            <div class="hero-trust">
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Genuine Parts</span>
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>6 Dealerships</span>
+                <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Expert Technicians</span>
+                <span class="hero-google-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    <span class="stars">★★★★★</span> 4.7
+                </span>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="quiz-card">
+            <div class="quiz-progress" id="quiz-progress" style="display:none;">
+                <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill"></div></div>
+                <span class="quiz-progress-label" id="qplabel"></span>
+            </div>
+
+            <!-- STEP 0 – Intent -->
+            <div class="quiz-step active" id="step-0">
+                <div class="quiz-q">Which service are you interested in today?</div>
+                <div class="opts">
+                    <button class="opt" onclick="selectOption(this); setType('buy'); goTo('buy-model')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l3-3h8l3 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="2"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">Buy a Car</div><div class="opt-sub">New Toyota or Lexus</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                    <button class="opt" onclick="selectOption(this); setType('service'); goTo('srv-brand')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">Vehicle Service &amp; Repairs</div><div class="opt-sub">Factory-trained technicians</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                    <button class="opt" onclick="selectOption(this); setType('parts'); goTo('prt-brand')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="2"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">Genuine Parts</div><div class="opt-sub">Original Toyota &amp; Lexus parts</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                    <button class="opt" onclick="selectOption(this); setType('general'); goTo('gen-type')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">General Enquiry</div><div class="opt-sub">Fleet, test drive, warranty, oil &amp; more</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BUY A CAR (new flow) -->
+            <div class="quiz-step" id="buy-model">
+                <div class="step-label">Buy a Car · 1 of 4</div>
+                <div class="quiz-q">Which Toyota interests you?</div>
+                <div class="opts g4">
+                    <button class="opt" onclick="selectOption(this); setVal('model','Corolla'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">Corolla</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('model','Hilux'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">Hilux</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('model','Prado'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">Prado</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('model','Fortuner'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">Fortuner</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('model','Hiace'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">Hiace</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('model','Land Cruiser'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">Land Cruiser</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('model','RAV4'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">RAV4</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('model','Other'); goTo('buy-intent')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
+            </div>
+            <div class="quiz-step" id="buy-intent">
+                <div class="step-label">Buy a Car · 2 of 4</div>
+                <div class="quiz-q">What would you like to do today?</div>
+                <div class="opts">
+                    <button class="opt" onclick="selectOption(this); setVal('intent','Test Drive'); goTo('buy-budget')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">Book a Test Drive</div><div class="opt-sub">Get behind the wheel</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                    <button class="opt" onclick="selectOption(this); setVal('intent','Quote'); goTo('buy-budget')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">Request a Quote</div><div class="opt-sub">Get pricing details</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                    <button class="opt" onclick="selectOption(this); setVal('intent','Learn More'); goTo('buy-budget')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="8" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="0.5"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">Learn More</div><div class="opt-sub">Explore the range</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                    <button class="opt" onclick="selectOption(this); goTo('rejection')">
+                        <span class="opt-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="8" x2="8" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                        <span class="opt-text"><div class="opt-title">Just Browsing</div><div class="opt-sub">No pressure</div></span>
+                        <span class="opt-check"></span>
+                    </button>
+                </div>
+                <button class="back-btn" onclick="goTo('buy-model')">&larr; Back</button>
+            </div>
+            <div class="quiz-step" id="buy-budget">
+                <div class="step-label">Buy a Car · 3 of 4</div>
+                <div class="quiz-q">What's your estimated budget?</div>
+                <div class="opts">
+                    <button class="opt" onclick="selectOption(this); goTo('rejection')"><span class="opt-text"><div class="opt-title">Under ₦20M</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('budget','₦20M–₦35M'); goTo('buy-location')"><span class="opt-text"><div class="opt-title">₦20M – ₦35M</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('budget','₦35M–₦50M'); goTo('buy-location')"><span class="opt-text"><div class="opt-title">₦35M – ₦50M</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('budget','₦50M+'); goTo('buy-location')"><span class="opt-text"><div class="opt-title">₦50M+</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('buy-intent')">&larr; Back</button>
+            </div>
+            <div class="quiz-step" id="buy-location">
+                <div class="step-label">Buy a Car · 4 of 4</div>
+                <div class="quiz-q">Preferred location</div>
+                <div class="opts">
+                    <button class="opt" onclick="selectOption(this); setVal('location','Lagos'); goTo('contact')"><span class="opt-text"><div class="opt-title">Lagos</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('location','Abuja'); goTo('contact')"><span class="opt-text"><div class="opt-title">Abuja</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('location','Port Harcourt'); goTo('contact')"><span class="opt-text"><div class="opt-title">Port Harcourt</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('location','Other'); goTo('contact')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('buy-budget')">&larr; Back</button>
+            </div>
+
+            <!-- SERVICE (unchanged) -->
+            <div class="quiz-step" id="srv-brand">
+                <div class="step-label">Service · 1 of 3</div>
+                <div class="quiz-q">Which brand is your vehicle?</div>
+                <div class="opts g2">
+                    <button class="opt" onclick="selectOption(this); setVal('brand','Toyota'); goTo('srv-model')"><span class="opt-text"><div class="opt-title">Toyota</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('brand','Lexus'); goTo('srv-model')"><span class="opt-text"><div class="opt-title">Lexus</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('brand','Other'); goTo('srv-model')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
+            </div>
+            <div class="quiz-step" id="srv-model">
+                <div class="step-label">Service · 2 of 3</div>
+                <div class="quiz-q">What model?</div>
+                <div class="qinput-group"><input type="text" id="srv-model-input" placeholder="e.g. Corolla, Hilux, ES 350" oninput="setVal('model',this.value)"></div>
+                <button class="next-btn" onclick="goTo('srv-timeline')">Next</button>
+                <button class="back-btn" onclick="goTo('srv-brand')">&larr; Back</button>
+            </div>
+            <div class="quiz-step" id="srv-timeline">
+                <div class="step-label">Service · 3 of 3</div>
+                <div class="quiz-q">How soon do you need the service?</div>
+                <div class="opts">
+                    <button class="opt" onclick="selectOption(this); setVal('timeline','Immediately'); goTo('contact')"><span class="opt-text"><div class="opt-title">Immediately</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 week'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 week</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 month'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 month</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); goTo('rejection')"><span class="opt-text"><div class="opt-title">Not for now</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('srv-model')">&larr; Back</button>
+            </div>
+
+            <!-- PARTS (unchanged) -->
+            <div class="quiz-step" id="prt-brand">
+                <div class="step-label">Parts · 1 of 3</div>
+                <div class="quiz-q">Which brand do you need parts for?</div>
+                <div class="opts g2">
+                    <button class="opt" onclick="selectOption(this); setVal('brand','Toyota'); goTo('prt-model')"><span class="opt-text"><div class="opt-title">Toyota</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('brand','Lexus'); goTo('prt-model')"><span class="opt-text"><div class="opt-title">Lexus</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('brand','Other'); goTo('prt-model')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
+            </div>
+            <div class="quiz-step" id="prt-model">
+                <div class="step-label">Parts · 2 of 3</div>
+                <div class="quiz-q">What model?</div>
+                <div class="qinput-group"><input type="text" id="prt-model-input" placeholder="e.g. Hilux, Corolla, ES 350" oninput="setVal('model',this.value)"></div>
+                <button class="next-btn" onclick="goTo('prt-timeline')">Next</button>
+                <button class="back-btn" onclick="goTo('prt-brand')">&larr; Back</button>
+            </div>
+            <div class="quiz-step" id="prt-timeline">
+                <div class="step-label">Parts · 3 of 3</div>
+                <div class="quiz-q">How soon do you need the parts?</div>
+                <div class="opts">
+                    <button class="opt" onclick="selectOption(this); setVal('timeline','Immediately'); goTo('contact')"><span class="opt-text"><div class="opt-title">Immediately</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 week'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 week</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 month'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 month</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); goTo('rejection')"><span class="opt-text"><div class="opt-title">Not for now</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('prt-model')">&larr; Back</button>
+            </div>
+
+            <!-- GENERAL ENQUIRY (unchanged) -->
+            <div class="quiz-step" id="gen-type">
+                <div class="step-label">General Enquiry</div>
+                <div class="quiz-q">What do you need help with?</div>
+                <div class="opts g2">
+                    <button class="opt" onclick="selectOption(this); setVal('enquiryType','Fleet / Business'); goTo('contact')"><span class="opt-text"><div class="opt-title">Fleet / Business</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('enquiryType','Test drive'); goTo('contact')"><span class="opt-text"><div class="opt-title">Test drive</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('enquiryType','Warranty / After-sales'); goTo('contact')"><span class="opt-text"><div class="opt-title">Warranty / After-sales</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('enquiryType','Oil & fluids'); goTo('contact')"><span class="opt-text"><div class="opt-title">Oil &amp; fluids</div></span><span class="opt-check"></span></button>
+                    <button class="opt" onclick="selectOption(this); setVal('enquiryType','Other'); goTo('contact')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
+                </div>
+                <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
+            </div>
+
+            <!-- CONTACT -->
+            <div class="quiz-step" id="contact">
+                <div class="step-label">Your details</div>
+                <div class="quiz-q">How can we reach you?</div>
+                <input type="text" class="hp-field" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <div class="qrow">
+                    <div class="qinput-group"><label>First name *</label><input type="text" id="fname" placeholder="Chinedu" autocomplete="given-name" oninput="setVal('firstName',this.value);clearError(this)"><div class="field-error" id="err-fname">Required</div></div>
+                    <div class="qinput-group"><label>Last name</label><input type="text" id="lname" placeholder="Adekunle" autocomplete="family-name" oninput="setVal('lastName',this.value)"></div>
+                </div>
+                <div class="qinput-group"><label>Email *</label><input type="email" id="email" placeholder="chinedu.ade@email.com" autocomplete="email" oninput="setVal('email',this.value);clearError(this)"><div class="field-error" id="err-email">Valid email required</div></div>
+                <div class="qinput-group"><label>Phone (WhatsApp) *</label><div class="phone-prefix"><span>+234</span><input type="tel" id="phone" placeholder="801 234 5678" inputmode="numeric" autocomplete="tel" oninput="setVal('phone',this.value);clearError(this)"></div><div class="field-error" id="err-phone">Valid phone number required</div></div>
+                <div class="qinput-group"><label>City *</label><select id="city" onchange="setVal('city',this.value);clearError(this)"><option value="">Select your city</option><option value="Lagos">Lagos</option><option value="Abuja">Abuja</option><option value="Port Harcourt">Port Harcourt</option><option value="Other">Other</option></select><div class="field-error" id="err-city">Please select a city</div></div>
+                <button class="next-btn" id="submit-btn" onclick="submitQuiz()">Submit enquiry</button>
+                <p class="consent">By submitting, you agree to be contacted by Toyota by CFAO. <a href="/privacy">Privacy Policy</a></p>
+                <button class="back-btn" onclick="goToPreviousContact()">&larr; Back</button>
+            </div>
+
+            <!-- REJECTION -->
+            <div class="quiz-step" id="rejection">
+                <div class="rejection-card">
+                    <div class="rejection-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <h3>Thanks for your interest</h3>
+                    <p>We don't have a match for you right now, but you can explore everything on our website.</p>
+                    <a href="https://toyotabycfao.ng" class="btn-outline" target="_blank" rel="noopener">Visit toyotabycfao.ng &rarr;</a>
+                </div>
+            </div>
+
+            <!-- LOADING -->
+            <div class="quiz-step" id="redirecting">
+                <div class="ty-loading"><p>Submitting your enquiry...</p><p style="font-size:0.8125rem;">You'll be redirected shortly.</p></div>
+            </div>
+        </div>
     </div>
-
-    <div class="quiz-card" id="quiz-card">
-      <div class="quiz-progress" id="quiz-progress" style="display:none;">
-        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill"></div></div>
-        <span class="quiz-progress-label" id="qplabel"></span>
-      </div>
-
-      <!-- STEP 0 – Intent -->
-      <div class="quiz-step active" id="step-0">
-        <div class="quiz-q">Which service are you interested in today?</div>
-        <div class="quiz-hint">Select your path - we'll guide you through.</div>
-        <div class="opts">
-          <button class="opt" onclick="selectOption(this); setType('buy'); goTo('buy-brand')">
-            <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l3-3h8l3 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="2"/></svg></span>
-            <span class="opt-text"><div class="opt-title">Buy a Car</div><div class="opt-sub">New Toyota or Lexus</div></span>
-            <span class="opt-check"></span>
-          </button>
-          <button class="opt" onclick="selectOption(this); setType('service'); goTo('srv-brand')">
-            <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="opt-text"><div class="opt-title">Vehicle Service &amp; Repairs</div><div class="opt-sub">Factory-trained technicians</div></span>
-            <span class="opt-check"></span>
-          </button>
-          <button class="opt" onclick="selectOption(this); setType('parts'); goTo('prt-brand')">
-            <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="2"/></svg></span>
-            <span class="opt-text"><div class="opt-title">Genuine Parts</div><div class="opt-sub">Original Toyota &amp; Lexus parts</div></span>
-            <span class="opt-check"></span>
-          </button>
-          <button class="opt" onclick="selectOption(this); setType('general'); goTo('gen-type')">
-            <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span class="opt-text"><div class="opt-title">General Enquiry</div><div class="opt-sub">Fleet, test drive, warranty, oil &amp; more</div></span>
-            <span class="opt-check"></span>
-          </button>
-        </div>
-      </div>
-
-      <!-- BUY A CAR -->
-      <div class="quiz-step" id="buy-brand">
-        <div class="step-label">Buy a Car · 1 of 2</div>
-        <div class="quiz-q">Which brand are you interested in?</div>
-        <div class="opts g2">
-          <button class="opt" onclick="selectOption(this); setVal('brand','Toyota'); goTo('buy-timeline')"><span class="opt-text"><div class="opt-title">Toyota</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('brand','Lexus'); goTo('buy-timeline')"><span class="opt-text"><div class="opt-title">Lexus</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('brand','Not sure'); goTo('buy-timeline')"><span class="opt-text"><div class="opt-title">Not sure</div></span><span class="opt-check"></span></button>
-        </div>
-        <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
-      </div>
-      <div class="quiz-step" id="buy-timeline">
-        <div class="step-label">Buy a Car · 2 of 2</div>
-        <div class="quiz-q">How soon are you looking to buy?</div>
-        <div class="opts">
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Immediately'); goTo('contact')"><span class="opt-text"><div class="opt-title">Immediately</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 month'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 month</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('timeline','1-3 months'); goTo('contact')"><span class="opt-text"><div class="opt-title">1-3 months</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); goTo('rejection')"><span class="opt-text"><div class="opt-title">Not for now</div></span><span class="opt-check"></span></button>
-        </div>
-        <button class="back-btn" onclick="goTo('buy-brand')">&larr; Back</button>
-      </div>
-
-      <!-- SERVICE -->
-      <div class="quiz-step" id="srv-brand">
-        <div class="step-label">Service · 1 of 3</div>
-        <div class="quiz-q">Which brand is your vehicle?</div>
-        <div class="opts g2">
-          <button class="opt" onclick="selectOption(this); setVal('brand','Toyota'); goTo('srv-model')"><span class="opt-text"><div class="opt-title">Toyota</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('brand','Lexus'); goTo('srv-model')"><span class="opt-text"><div class="opt-title">Lexus</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('brand','Other'); goTo('srv-model')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
-        </div>
-        <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
-      </div>
-      <div class="quiz-step" id="srv-model">
-        <div class="step-label">Service · 2 of 3</div>
-        <div class="quiz-q">What model?</div>
-        <div class="qinput-group"><input type="text" id="srv-model-input" placeholder="e.g. Corolla, Hilux, ES 350" oninput="setVal('model',this.value)"></div>
-        <button class="next-btn" onclick="goTo('srv-timeline')">Next</button>
-        <button class="back-btn" onclick="goTo('srv-brand')">&larr; Back</button>
-      </div>
-      <div class="quiz-step" id="srv-timeline">
-        <div class="step-label">Service · 3 of 3</div>
-        <div class="quiz-q">How soon do you need the service?</div>
-        <div class="opts">
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Immediately'); goTo('contact')"><span class="opt-text"><div class="opt-title">Immediately</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 week'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 week</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 month'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 month</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); goTo('rejection')"><span class="opt-text"><div class="opt-title">Not for now</div></span><span class="opt-check"></span></button>
-        </div>
-        <button class="back-btn" onclick="goTo('srv-model')">&larr; Back</button>
-      </div>
-
-      <!-- PARTS -->
-      <div class="quiz-step" id="prt-brand">
-        <div class="step-label">Parts · 1 of 3</div>
-        <div class="quiz-q">Which brand do you need parts for?</div>
-        <div class="opts g2">
-          <button class="opt" onclick="selectOption(this); setVal('brand','Toyota'); goTo('prt-model')"><span class="opt-text"><div class="opt-title">Toyota</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('brand','Lexus'); goTo('prt-model')"><span class="opt-text"><div class="opt-title">Lexus</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('brand','Other'); goTo('prt-model')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
-        </div>
-        <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
-      </div>
-      <div class="quiz-step" id="prt-model">
-        <div class="step-label">Parts · 2 of 3</div>
-        <div class="quiz-q">What model?</div>
-        <div class="qinput-group"><input type="text" id="prt-model-input" placeholder="e.g. Hilux, Corolla, ES 350" oninput="setVal('model',this.value)"></div>
-        <button class="next-btn" onclick="goTo('prt-timeline')">Next</button>
-        <button class="back-btn" onclick="goTo('prt-brand')">&larr; Back</button>
-      </div>
-      <div class="quiz-step" id="prt-timeline">
-        <div class="step-label">Parts · 3 of 3</div>
-        <div class="quiz-q">How soon do you need the parts?</div>
-        <div class="opts">
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Immediately'); goTo('contact')"><span class="opt-text"><div class="opt-title">Immediately</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 week'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 week</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('timeline','Within 1 month'); goTo('contact')"><span class="opt-text"><div class="opt-title">Within 1 month</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); goTo('rejection')"><span class="opt-text"><div class="opt-title">Not for now</div></span><span class="opt-check"></span></button>
-        </div>
-        <button class="back-btn" onclick="goTo('prt-model')">&larr; Back</button>
-      </div>
-
-      <!-- GENERAL ENQUIRY -->
-      <div class="quiz-step" id="gen-type">
-        <div class="step-label">General Enquiry</div>
-        <div class="quiz-q">What do you need help with?</div>
-        <div class="opts g2">
-          <button class="opt" onclick="selectOption(this); setVal('enquiryType','Fleet / Business'); goTo('contact')"><span class="opt-text"><div class="opt-title">Fleet / Business</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('enquiryType','Test drive'); goTo('contact')"><span class="opt-text"><div class="opt-title">Test drive</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('enquiryType','Warranty / After-sales'); goTo('contact')"><span class="opt-text"><div class="opt-title">Warranty / After-sales</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('enquiryType','Oil & fluids'); goTo('contact')"><span class="opt-text"><div class="opt-title">Oil &amp; fluids</div></span><span class="opt-check"></span></button>
-          <button class="opt" onclick="selectOption(this); setVal('enquiryType','Other'); goTo('contact')"><span class="opt-text"><div class="opt-title">Other</div></span><span class="opt-check"></span></button>
-        </div>
-        <button class="back-btn" onclick="goTo('step-0')">&larr; Back</button>
-      </div>
-
-      <!-- CONTACT -->
-      <div class="quiz-step" id="contact">
-        <div class="step-label">Your details</div>
-        <div class="quiz-q">How can we reach you?</div>
-        <input type="text" class="hp-field" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <div class="qrow">
-          <div class="qinput-group"><label>First name *</label><input type="text" id="fname" placeholder="Chinedu" autocomplete="given-name" oninput="setVal('firstName',this.value);clearError(this)"><div class="field-error" id="err-fname">Required</div></div>
-          <div class="qinput-group"><label>Last name</label><input type="text" id="lname" placeholder="Adekunle" autocomplete="family-name" oninput="setVal('lastName',this.value)"></div>
-        </div>
-        <div class="qinput-group"><label>Email *</label><input type="email" id="email" placeholder="chinedu.ade@email.com" autocomplete="email" oninput="setVal('email',this.value);clearError(this)"><div class="field-error" id="err-email">Valid email required</div></div>
-        <div class="qinput-group"><label>Phone (WhatsApp) *</label><div class="phone-prefix"><span>+234</span><input type="tel" id="phone" placeholder="801 234 5678" inputmode="numeric" autocomplete="tel" oninput="setVal('phone',this.value);clearError(this)"></div><div class="field-error" id="err-phone">Valid phone number required</div></div>
-        <div class="qinput-group"><label>City *</label><select id="city" onchange="setVal('city',this.value);clearError(this)"><option value="">Select your city</option><option value="Lagos">Lagos</option><option value="Abuja">Abuja</option><option value="Port Harcourt">Port Harcourt</option><option value="Other">Other</option></select><div class="field-error" id="err-city">Please select a city</div></div>
-        <button class="next-btn" id="submit-btn" onclick="submitQuiz()">Submit enquiry</button>
-        <p class="consent">By submitting, you agree to be contacted by Toyota by CFAO. <a href="/privacy">Privacy Policy</a></p>
-        <button class="back-btn" onclick="goToPreviousContact()">&larr; Back</button>
-      </div>
-
-      <!-- REJECTION -->
-      <div class="quiz-step" id="rejection">
-        <div class="rejection-card">
-          <div class="rejection-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <h3>Thanks for your interest</h3>
-          <p>We don't have a match for you right now, but you can explore everything on our website.</p>
-          <a href="https://toyotabycfao.ng" class="btn-outline" target="_blank" rel="noopener">Visit toyotabycfao.ng &rarr;</a>
-        </div>
-      </div>
-
-      <!-- LOADING -->
-      <div class="quiz-step" id="redirecting">
-        <div class="ty-loading"><p>Submitting your enquiry...</p><p style="font-size:13px;">You'll be redirected shortly.</p></div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
-  <span>120+ years in Nigeria</span>
-  <span>Backed by Toyota Tsusho Group</span>
-  <span>6 Nationwide Dealerships</span>
-  <span>3yr / 100,000km Warranty</span>
+    <span>120+ years in Nigeria</span>
+    <span>Backed by Toyota Tsusho Group</span>
+    <span>6 Nationwide Dealerships</span>
+    <span>3yr / 100,000km Warranty</span>
 </div>
 
 <!-- ABOUT -->
 <div class="section-sm bg-white">
-  <div class="eyebrow">About Toyota by CFAO</div>
-  <h2 class="s-title">Official Toyota partner in Nigeria</h2>
-  <p class="s-sub">Part of the Toyota Tsusho Group, we combine Toyota's global standards with 120+ years of automotive experience in Nigeria. Every vehicle and part is original, every technician factory-trained.</p>
-  <a href="#quiz-area" class="btn-link" style="margin-top:16px;">Start your enquiry &rarr;</a>
+    <div class="eyebrow">About Toyota by CFAO</div>
+    <h2 class="s-title">Official Toyota partner in Nigeria</h2>
+    <p class="s-sub">Part of the Toyota Tsusho Group, we combine Toyota's global standards with 120+ years of automotive experience in Nigeria. Every vehicle and part is original, every technician factory-trained.</p>
+    <a href="#quiz-area" class="btn-link" style="margin-top:16px;">Start your enquiry &rarr;</a>
 </div>
 
 <!-- SERVICES -->
 <div id="services" class="section bg-light">
-  <div class="eyebrow">Our Services</div>
-  <h2 class="s-title">Expert support on all fronts</h2>
-  <div class="grid-3" style="margin-top:32px;">
-    <a href="/form/buy-a-car" class="service-card">
-      <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M5 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l3-3h8l3 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="1.5"/></svg></div>
-      <h3>New Vehicle Sales</h3><p>Toyota's latest passenger, SUV, commercial and pickup range.</p>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </a>
-    <a href="/form/service" class="service-card">
-      <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Vehicle Servicing &amp; Enquiries</h3><p>Service booking, repairs, fleet, test drives, warranty &amp; more.</p>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </a>
-    <a href="/form/parts" class="service-card">
-      <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="1.5"/></svg></div>
-      <h3>Genuine Parts</h3><p>Original Toyota &amp; Lexus parts, guaranteed compatible.</p>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </a>
-    <a href="/form/oil" class="service-card">
-      <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Oil &amp; Fluids</h3><p>Genuine Toyota engine oil and lubricants.</p>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </a>
-  </div>
+    <div class="eyebrow">Our Services</div>
+    <h2 class="s-title">Expert support on all fronts</h2>
+    <div class="grid-3" style="margin-top:32px;">
+        <a href="/form/buy-a-car" class="service-card">
+            <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M5 17H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l3-3h8l3 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="1.5"/></svg></div>
+            <h3>New Vehicle Sales</h3><p>Toyota's latest passenger, SUV, commercial and pickup range.</p>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+        <a href="/form/service" class="service-card">
+            <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Vehicle Servicing &amp; Enquiries</h3><p>Service booking, repairs, fleet, test drives, warranty &amp; more.</p>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+        <a href="/form/parts" class="service-card">
+            <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="1.5"/></svg></div>
+            <h3>Genuine Parts</h3><p>Original Toyota &amp; Lexus parts, guaranteed compatible.</p>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+        <a href="/form/oil" class="service-card">
+            <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Oil &amp; Fluids</h3><p>Genuine Toyota engine oil and lubricants.</p>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+    </div>
 </div>
 
 <!-- VEHICLE CATEGORIES -->
 <div class="section bg-white">
-  <div class="eyebrow">Vehicle Categories</div>
-  <h2 class="s-title">Find your perfect Toyota</h2>
-  <div class="grid-3" style="margin-top:32px;">
-    <div class="cat-tile"><span class="tag">City Cars</span><h3>Compact &amp; efficient</h3><p>Starlet, Starlet Cross, Urban Cruiser</p></div>
-    <div class="cat-tile"><span class="tag">Sedans</span><h3>Comfort &amp; class</h3><p>Belta, Corolla Sedan</p></div>
-    <div class="cat-tile"><span class="tag">SUVs</span><h3>Space &amp; versatility</h3><p>Rush, Corolla Cross, RAV4, Fortuner</p></div>
-    <div class="cat-tile"><span class="tag">4x4</span><h3>Built for anywhere</h3><p>Prado, Land Cruiser 300, Land Cruiser 79</p></div>
-    <div class="cat-tile"><span class="tag">Pickups</span><h3>Work &amp; play</h3><p>Hilux</p></div>
-    <div class="cat-tile"><span class="tag">Commercial</span><h3>Move your business</h3><p>Hiace, Hiace Van, Coaster</p></div>
-  </div>
-  <div style="margin-top:28px;"><a href="/form/buy-a-car" class="btn-link">Explore all models &rarr;</a></div>
+    <div class="eyebrow">Vehicle Categories</div>
+    <h2 class="s-title">Find your perfect Toyota</h2>
+    <div class="grid-3" style="margin-top:32px;">
+        <div class="cat-tile"><span class="tag">City Cars</span><h3>Compact &amp; efficient</h3><p>Starlet, Starlet Cross, Urban Cruiser</p></div>
+        <div class="cat-tile"><span class="tag">Sedans</span><h3>Comfort &amp; class</h3><p>Belta, Corolla Sedan</p></div>
+        <div class="cat-tile"><span class="tag">SUVs</span><h3>Space &amp; versatility</h3><p>Rush, Corolla Cross, RAV4, Fortuner</p></div>
+        <div class="cat-tile"><span class="tag">4x4</span><h3>Built for anywhere</h3><p>Prado, Land Cruiser 300, Land Cruiser 79</p></div>
+        <div class="cat-tile"><span class="tag">Pickups</span><h3>Work &amp; play</h3><p>Hilux</p></div>
+        <div class="cat-tile"><span class="tag">Commercial</span><h3>Move your business</h3><p>Hiace, Hiace Van, Coaster</p></div>
+    </div>
+    <div style="margin-top:28px;"><a href="/form/buy-a-car" class="btn-link">Explore all models &rarr;</a></div>
 </div>
 
 <!-- WHY TOYOTA -->
 <div class="section bg-dark">
-  <div class="eyebrow" style="color:var(--red);">Why Toyota by CFAO</div>
-  <h2 class="s-title">Trusted across Nigeria for over a century</h2>
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:32px; align-items:start;">
-    <div class="stat-grid">
-      <div class="stat"><div class="num">120<em>+</em></div><div class="lbl">Years in Nigeria</div></div>
-      <div class="stat"><div class="num">6</div><div class="lbl">Nationwide dealerships</div></div>
-      <div class="stat"><div class="num">83K<em>+</em></div><div class="lbl">Community on Instagram</div></div>
-      <div class="stat"><div class="num">3yr</div><div class="lbl">100,000km warranty</div></div>
+    <div class="eyebrow" style="color:var(--red);">Why Toyota by CFAO</div>
+    <h2 class="s-title">Trusted across Nigeria for over a century</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:32px; align-items:start;">
+        <div class="stat-grid">
+            <div class="stat"><div class="num">120<em>+</em></div><div class="lbl">Years in Nigeria</div></div>
+            <div class="stat"><div class="num">6</div><div class="lbl">Nationwide dealerships</div></div>
+            <div class="stat"><div class="num">83K<em>+</em></div><div class="lbl">Community on Instagram</div></div>
+            <div class="stat"><div class="num">3yr</div><div class="lbl">100,000km warranty</div></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="dark-card"><h3>Genuine Toyota parts</h3><p>Always original, crash-tested, and guaranteed.</p></div>
+            <div class="dark-card"><h3>Quick service available</h3><p>No appointment needed - just drive in.</p></div>
+            <div class="dark-card"><h3>Factory-trained technicians</h3><p>Serviced to Toyota's global standards, every time.</p></div>
+        </div>
     </div>
-    <div style="display:flex; flex-direction:column; gap:12px;">
-      <div class="dark-card"><h3>Genuine Toyota parts</h3><p>Always original, crash-tested, and guaranteed.</p></div>
-      <div class="dark-card"><h3>Quick service available</h3><p>No appointment needed - just drive in.</p></div>
-      <div class="dark-card"><h3>Factory-trained technicians</h3><p>Serviced to Toyota's global standards, every time.</p></div>
-    </div>
-  </div>
-  <div style="margin-top:28px;"><a href="#quiz-area" class="btn-link wo">Start your enquiry &rarr;</a></div>
+    <div style="margin-top:28px;"><a href="#quiz-area" class="btn-link wo">Start your enquiry &rarr;</a></div>
 </div>
 
 <!-- CTA BANNER -->
@@ -684,255 +1522,314 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <!-- FAQ -->
 <div class="section-sm bg-white">
-  <div class="eyebrow">FAQ</div>
-  <h2 class="s-title">Quick answers</h2>
-  <div style="display:flex; flex-direction:column; gap:14px; margin-top:24px;">
-    <div class="faq-item"><strong>How do I book a service?</strong><br><span>Use the enquiry form above.</span></div>
-    <div class="faq-item"><strong>Are parts genuine?</strong><br><span>Yes, we supply only original Toyota and Lexus parts.</span></div>
-    <div class="faq-item"><strong>Where are your dealerships?</strong><br><span>Lagos, Abuja, Port Harcourt, and Ladipo Parts Store.</span></div>
-    <div class="faq-item"><strong>What warranty do you offer?</strong><br><span>3 years or 100,000km on new Toyotas.</span></div>
-  </div>
+    <div class="eyebrow">FAQ</div>
+    <h2 class="s-title">Quick answers</h2>
+    <div style="display:flex; flex-direction:column; gap:14px; margin-top:24px;">
+        <div class="faq-item"><strong>How do I book a service?</strong><br><span>Use the enquiry form above.</span></div>
+        <div class="faq-item"><strong>Are parts genuine?</strong><br><span>Yes, we supply only original Toyota and Lexus parts.</span></div>
+        <div class="faq-item"><strong>Where are your dealerships?</strong><br><span>Lagos, Abuja, Port Harcourt, and Ladipo Parts Store.</span></div>
+        <div class="faq-item"><strong>What warranty do you offer?</strong><br><span>3 years or 100,000km on new Toyotas.</span></div>
+    </div>
 </div>
 
 <!-- FINAL CTA -->
 <div style="text-align:center; padding:64px 48px; background:var(--bg-light);">
-  <h2 class="s-title">Ready to get started?</h2>
-  <p style="color:var(--muted); margin-bottom:24px;">Use the enquiry form above.</p>
-  <a href="#quiz-area" class="btn-link">Start your enquiry &rarr;</a>
+    <h2 class="s-title">Ready to get started?</h2>
+    <p style="color:var(--muted); margin-bottom:24px;">Use the enquiry form above.</p>
+    <a href="#quiz-area" class="btn-link">Start your enquiry &rarr;</a>
 </div>
 
 <footer>
-  <img src="logo.png" alt="Toyota by CFAO" height="30">
-  <div>&copy; <span id="footer-year"></span> Toyota by CFAO. All rights reserved.</div>
+    <img src="https://toyotabycfao.ng/logo.png" alt="Toyota by CFAO" height="30">
+    <div>&copy; <span id="footer-year"></span> Toyota by CFAO. All rights reserved.</div>
 </footer>
 
-<script src="config.js"></script>
+<!-- config.js must define GAS_URL -->
+<script src="/config.js"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
 
-  var THANKYOU_URLS = {
-    buy: '/thank-you/car-sale',
-    service: '/thank-you/service',
-    parts: '/thank-you/parts',
-    oil: '/thank-you/oil',
-    general: '/thank-you/general'
-  };
-
-  var utmParams = {};
-  (function(){
-    var p = new URLSearchParams(window.location.search);
-    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){ if(p.get(k)) utmParams[k]=p.get(k); });
-  })();
-
-  var vals = {}, currentStep='step-0', userType='', quizStarted=false, submitFinished=false;
-
-  function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
-  function setType(t){
-    userType=t; vals.type=t;
-    if(!quizStarted){ quizStarted=true; window.dataLayer.push({event:'quiz_start', type:t}); }
-  }
-  function setVal(k,v){ vals[k]=v; }
-
-  function normalizePhone(raw){
-    if(!raw) return '';
-    var d = (''+raw).replace(/\D/g,'');
-    if(d.indexOf('234')===0) d = d.slice(3);
-    d = d.replace(/^0+/,'');
-    return d ? '+234'+d : '';
-  }
-  function isValidNGPhone(raw){ var n=normalizePhone(raw); return /^\+234\d{10}$/.test(n); }
-  function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-
-  function selectOption(btn){
-    var p = btn.closest('.opts');
-    if(p) p.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
-    btn.classList.add('selected');
-  }
-
-  function goTo(stepId){
-    document.getElementById(currentStep).classList.remove('active');
-    document.getElementById(stepId).classList.add('active');
-    currentStep = stepId;
-    updateProgress();
-    // Add interactive background class to quiz card when not on step 0 or rejection
-    var qc = document.getElementById('quiz-card');
-    if (stepId !== 'step-0' && stepId !== 'rejection') {
-      qc.classList.add('step-active');
-    } else {
-      qc.classList.remove('step-active');
-    }
-    if(stepId!=='step-0' && stepId!=='rejection'){ document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'}); }
-    if(stepId==='step-0'){
-      userType=''; vals={};
-      document.querySelectorAll('.opt.selected').forEach(function(b){ b.classList.remove('selected'); });
-      qc.classList.remove('step-active');
-    }
-    if(stepId==='rejection'){ window.dataLayer.push({event:'quiz_disqualified', type:userType, reason:'not_for_now'}); }
-  }
-
-  function goToPreviousContact(){
-    var prev = { buy:'buy-timeline', service:'srv-timeline', parts:'prt-timeline', general:'gen-type' };
-    goTo(prev[userType] || 'step-0');
-  }
-
-  function updateProgress(){
-    var el = document.getElementById('quiz-progress');
-    if(!userType || currentStep==='step-0' || currentStep==='rejection' || currentStep==='redirecting'){ el.style.display='none'; return; }
-    var total = { buy:2, service:3, parts:3, general:1 }[userType] || 0;
-    var order = {
-      buy:['buy-brand','buy-timeline','contact'],
-      service:['srv-brand','srv-model','srv-timeline','contact'],
-      parts:['prt-brand','prt-model','prt-timeline','contact'],
-      general:['gen-type','contact']
-    }[userType] || [];
-    var idx = order.indexOf(currentStep);
-    var stepNum = idx>=0 ? idx+1 : total+1;
-    if(currentStep==='contact') stepNum = total+1;
-    var pct = Math.round((stepNum/(total+1))*100);
-    el.style.display='flex';
-    document.getElementById('qpfill').style.width = pct+'%';
-    document.getElementById('qplabel').textContent = stepNum+'/'+(total+1);
-  }
-
-  function showError(id,msgId){ var el=document.getElementById(id); if(el) el.classList.add('error'); var e=document.getElementById(msgId); if(e) e.classList.add('show'); }
-  function clearError(input){ if(!input) return; input.classList.remove('error'); var e=document.getElementById('err-'+input.id); if(e) e.classList.remove('show'); }
-
-  function submitQuiz(){
-    if(document.getElementById('website').value){ return; }
-
-    var fname = document.getElementById('fname').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var phone = document.getElementById('phone').value.trim();
-    var city  = document.getElementById('city').value;
-
-    var valid = true;
-    if(!fname){ showError('fname','err-fname'); valid=false; }
-    if(!email || !isValidEmail(email)){ showError('email','err-email'); valid=false; }
-    if(!phone || !isValidNGPhone(phone)){ showError('phone','err-phone'); valid=false; }
-    if(!city){ showError('city','err-city'); valid=false; }
-    if(!valid) return;
-
-    vals.firstName = fname;
-    vals.lastName = document.getElementById('lname').value.trim();
-    vals.email = email;
-    vals.phone = normalizePhone(phone);
-    vals.city = city;
-
-    if((userType==='service' || userType==='parts') && vals.brand){
-      var b = vals.brand.toLowerCase();
-      vals.leadPriority = (!b.includes('toyota') && !b.includes('lexus')) ? 'low' : 'standard';
-    } else { vals.leadPriority='standard'; }
-
-    Object.assign(vals, utmParams);
-    vals.submittedAt = new Date().toISOString();
-
-    var redirectUrl;
-    if(userType==='general' && vals.enquiryType==='Oil & fluids'){ redirectUrl = THANKYOU_URLS.oil; }
-    else { redirectUrl = THANKYOU_URLS[userType] || '/thank-you/service'; }
-    redirectUrl = redirectUrl + '?firstName=' + encodeURIComponent(vals.firstName || '');
-
-    var btn = document.getElementById('submit-btn');
-    btn.disabled = true; btn.textContent = 'Submitting...';
-    goTo('redirecting');
-    window.dataLayer.push({event:'quiz_submit', type:userType, priority:vals.leadPriority});
-
-    submitFinished = false;
-    function go(){ if(submitFinished) return; submitFinished = true; window.location.href = redirectUrl; }
-    var failsafe = setTimeout(go, 8000);
-
-    fetch(GAS_URL, { method:'POST', body:JSON.stringify(vals), headers:{'Content-Type':'text/plain'} })
-      .then(function(r){ return r.ok ? r.json() : Promise.reject('HTTP '+r.status); })
-      .then(function(data){ clearTimeout(failsafe); window.dataLayer.push({event:'quiz_success', type:userType}); go(); })
-      .catch(function(err){
-        clearTimeout(failsafe);
-        if(submitFinished) return;
-        console.error('Submit failed:', err);
-        btn.disabled=false; btn.textContent='Submit enquiry';
-        goTo('contact');
-        alert('Sorry, something went wrong. Please try again.');
-      });
-  }
-
-  function openCallbackModal(){ document.getElementById('callback-modal').classList.add('active'); document.body.style.overflow='hidden'; }
-  function closeCallbackModal(){ document.getElementById('callback-modal').classList.remove('active'); document.body.style.overflow=''; document.querySelectorAll('#callback-modal .field-error').forEach(function(e){ e.classList.remove('show'); }); }
-
-  function handlePrefixChange(selectId, otherInputId, phoneInputId) {
-    var sel = document.getElementById(selectId);
-    var other = document.getElementById(otherInputId);
-    var phoneInput = document.getElementById(phoneInputId);
-    if (sel.value === 'other') {
-      other.style.display = 'block';
-      phoneInput.placeholder = 'Enter number';
-      phoneInput.value = '';
-      other.focus();
-    } else {
-      other.style.display = 'none';
-      phoneInput.placeholder = '801 234 5678';
-      phoneInput.value = '';
-    }
-  }
-
-  function submitCallback(){
-    if(document.getElementById('cb-company').value){ return; }
-
-    var intent = document.getElementById('callback-intent').value;
-    var fname  = document.getElementById('callback-fname').value.trim();
-    var lname  = document.getElementById('callback-lname').value.trim();
-    var email  = document.getElementById('callback-email').value.trim();
-    var phone  = document.getElementById('callback-phone').value.trim();
-    var prefix = document.getElementById('callback-phone-prefix').value;
-    var timing = document.getElementById('callback-timing').value;
-    var valid = true;
-
-    if(!intent){ document.getElementById('callback-intent-error').classList.add('show'); valid = false; }
-    if(!fname){ document.getElementById('callback-fname-error').classList.add('show'); valid = false; }
-    if(!email || !isValidEmail(email)){ document.getElementById('callback-email-error').classList.add('show'); valid = false; }
-    if(!phone || !isValidNGPhone(phone)){ document.getElementById('callback-phone-error').classList.add('show'); valid = false; }
-    if(!timing){ document.getElementById('callback-timing-error').classList.add('show'); valid = false; }
-    if(!valid) return;
-
-    var fullPhone = prefix === 'other' ? (document.getElementById('callback-phone-other').value + phone) : (prefix + phone);
-    var payload = {
-      type: 'callback',
-      intent: intent,
-      firstName: fname,
-      lastName: lname,
-      email: email,
-      phone: normalizePhone(fullPhone),
-      callbackTiming: timing,
-      submittedAt: new Date().toISOString()
+    var THANKYOU_URLS = {
+        buy: '/thank-you/car-sale',
+        service: '/thank-you/service',
+        parts: '/thank-you/parts',
+        oil: '/thank-you/oil',
+        general: '/thank-you/general'
     };
-    Object.assign(payload, utmParams);
 
-    fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload), headers:{'Content-Type':'text/plain'} })
-      .then(function(r){ return r.ok ? r.json() : Promise.reject('HTTP '+r.status); })
-      .then(function(data){
-        window.dataLayer.push({event:'callback_request', intent:intent});
-        window.location.href = '/thank-you/callback?firstName=' + encodeURIComponent(fname);
-      })
-      .catch(function(err){
-        console.error('Callback failed:', err);
-        alert('Sorry, something went wrong. Please try again.');
-      });
-  }
+    var utmParams = {};
+    (function(){
+        var p = new URLSearchParams(window.location.search);
+        ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){ if(p.get(k)) utmParams[k]=p.get(k); });
+    })();
 
-  document.addEventListener('keydown', function(e){
-    if(e.key==='Enter'){ var a=document.querySelector('.quiz-step.active'); if(!a) return; var b=a.querySelector('.next-btn'); if(b && !b.disabled){ e.preventDefault(); b.click(); } }
-    if(e.key==='Escape'){ closeCallbackModal(); }
-  });
-  document.getElementById('callback-modal').addEventListener('click', function(e){ if(e.target===this) closeCallbackModal(); });
+    var vals = {}, currentStep='step-0', userType='', quizStarted=false, submitFinished=false;
 
-  document.addEventListener('DOMContentLoaded', function(){
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
-    var banners = [
-      'Need Genuine Parts? <a href="/form/parts">Start Enquiry</a>',
-      'Book Your Next Service <a href="/form/service">Continue</a>',
-      'Looking for a Hilux? <a href="/form/buy-a-car">See Options</a>',
-      'Need Engine Oil? <a href="/form/oil">Order Now</a>'
-    ];
-    var i=0;
-    setInterval(function(){ document.getElementById('cta-banner').innerHTML='<span>'+banners[i]+'</span>'; i=(i+1)%banners.length; }, 5000);
-  });
+    function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+    function setType(t){
+        userType=t; vals.type=t;
+        if(!quizStarted){ quizStarted=true; window.dataLayer.push({event:'quiz_start', type:t}); }
+    }
+    function setVal(k,v){ vals[k]=v; }
+
+    function normalizePhone(raw){
+        if(!raw) return '';
+        var d = (''+raw).replace(/\D/g,'');
+        if(d.indexOf('234')===0) d = d.slice(3);
+        d = d.replace(/^0+/,'');
+        return d ? '+234'+d : '';
+    }
+    function isValidNGPhone(raw){ var n=normalizePhone(raw); return /^\+234\d{10}$/.test(n); }
+    function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+    function selectOption(btn){
+        var p = btn.closest('.opts');
+        if(p) p.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
+        btn.classList.add('selected');
+    }
+
+    function goTo(stepId){
+        document.getElementById(currentStep).classList.remove('active');
+        document.getElementById(stepId).classList.add('active');
+        currentStep = stepId;
+        updateProgress();
+        var qc = document.getElementById('quiz-card');
+        if (stepId !== 'step-0' && stepId !== 'rejection') {
+            qc.classList.add('step-active');
+        } else {
+            qc.classList.remove('step-active');
+        }
+        if(stepId!=='step-0' && stepId!=='rejection'){ document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'}); }
+        if(stepId==='step-0'){
+            userType=''; vals={};
+            document.querySelectorAll('.opt.selected').forEach(function(b){ b.classList.remove('selected'); });
+            qc.classList.remove('step-active');
+        }
+        if(stepId==='rejection'){ window.dataLayer.push({event:'quiz_disqualified', type:userType, reason:'not_for_now'}); }
+    }
+
+    function goToPreviousContact(){
+        var prev = { buy:'buy-location', service:'srv-timeline', parts:'prt-timeline', general:'gen-type' };
+        goTo(prev[userType] || 'step-0');
+    }
+
+    function updateProgress(){
+        var el = document.getElementById('quiz-progress');
+        if(!userType || currentStep==='step-0' || currentStep==='rejection' || currentStep==='redirecting'){ el.style.display='none'; return; }
+        var total = { buy:4, service:3, parts:3, general:1 }[userType] || 0;
+        var order = {
+            buy:['buy-model','buy-intent','buy-budget','buy-location','contact'],
+            service:['srv-brand','srv-model','srv-timeline','contact'],
+            parts:['prt-brand','prt-model','prt-timeline','contact'],
+            general:['gen-type','contact']
+        }[userType] || [];
+        var idx = order.indexOf(currentStep);
+        var stepNum = idx>=0 ? idx+1 : total+1;
+        if(currentStep==='contact') stepNum = total+1;
+        var pct = Math.round((stepNum/(total+1))*100);
+        el.style.display='flex';
+        document.getElementById('qpfill').style.width = pct+'%';
+        document.getElementById('qplabel').textContent = stepNum+'/'+(total+1);
+    }
+
+    function showError(id,msgId){ var el=document.getElementById(id); if(el) el.classList.add('error'); var e=document.getElementById(msgId); if(e) e.classList.add('show'); }
+    function clearError(input){ if(!input) return; input.classList.remove('error'); var e=document.getElementById('err-'+input.id); if(e) e.classList.remove('show'); }
+
+    function submitQuiz(){
+        if(document.getElementById('website').value){ return; }
+
+        var fname = document.getElementById('fname').value.trim();
+        var email = document.getElementById('email').value.trim();
+        var phone = document.getElementById('phone').value.trim();
+        var city  = document.getElementById('city').value;
+
+        var valid = true;
+        if(!fname){ showError('fname','err-fname'); valid=false; }
+        if(!email || !isValidEmail(email)){ showError('email','err-email'); valid=false; }
+        if(!phone || !isValidNGPhone(phone)){ showError('phone','err-phone'); valid=false; }
+        if(!city){ showError('city','err-city'); valid=false; }
+        if(!valid) return;
+
+        var payload;
+        if (userType === 'buy') {
+            payload = {
+                type: 'buy-car',
+                email: email,
+                firstName: fname,
+                lastName: document.getElementById('lname').value.trim() || '',
+                phone: normalizePhone(phone),
+                city: vals.location || city,
+                brand: 'Toyota',
+                model: vals.model || '',
+                timeline: '',
+                enquiryType: vals.intent || '',
+                serviceType: '',
+                budget: vals.budget || '',
+                callbackTiming: '',
+                submittedAt: new Date().toISOString()
+            };
+        } else if (userType === 'service') {
+            payload = {
+                type: 'service',
+                email: email,
+                firstName: fname,
+                lastName: document.getElementById('lname').value.trim() || '',
+                phone: normalizePhone(phone),
+                city: city,
+                brand: vals.brand || '',
+                model: vals.model || '',
+                timeline: vals.timeline || '',
+                enquiryType: '',
+                serviceType: 'service',
+                budget: '',
+                callbackTiming: '',
+                submittedAt: new Date().toISOString()
+            };
+        } else if (userType === 'parts') {
+            payload = {
+                type: 'parts',
+                email: email,
+                firstName: fname,
+                lastName: document.getElementById('lname').value.trim() || '',
+                phone: normalizePhone(phone),
+                city: city,
+                brand: vals.brand || '',
+                model: vals.model || '',
+                timeline: vals.timeline || '',
+                enquiryType: '',
+                serviceType: 'parts',
+                budget: '',
+                callbackTiming: '',
+                submittedAt: new Date().toISOString()
+            };
+        } else {
+            payload = {
+                type: 'general',
+                email: email,
+                firstName: fname,
+                lastName: document.getElementById('lname').value.trim() || '',
+                phone: normalizePhone(phone),
+                city: city,
+                brand: '',
+                model: '',
+                timeline: '',
+                enquiryType: vals.enquiryType || '',
+                serviceType: '',
+                budget: '',
+                callbackTiming: '',
+                submittedAt: new Date().toISOString()
+            };
+        }
+
+        Object.assign(payload, utmParams);
+
+        var redirectUrl;
+        if(userType==='general' && vals.enquiryType==='Oil & fluids'){ redirectUrl = THANKYOU_URLS.oil; }
+        else { redirectUrl = THANKYOU_URLS[userType] || '/thank-you/service'; }
+        redirectUrl = redirectUrl + '?firstName=' + encodeURIComponent(fname);
+
+        var btn = document.getElementById('submit-btn');
+        btn.disabled = true; btn.textContent = 'Submitting...';
+        goTo('redirecting');
+        window.dataLayer.push({event:'quiz_submit', type:userType});
+
+        submitFinished = false;
+        function go(){ if(submitFinished) return; submitFinished = true; window.location.href = redirectUrl; }
+        var failsafe = setTimeout(go, 8000);
+
+        fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload), headers:{'Content-Type':'text/plain'} })
+            .then(function(r){ return r.ok ? r.json() : Promise.reject('HTTP '+r.status); })
+            .then(function(data){ clearTimeout(failsafe); window.dataLayer.push({event:'quiz_success', type:userType}); go(); })
+            .catch(function(err){
+                clearTimeout(failsafe);
+                if(submitFinished) return;
+                console.error('Submit failed:', err);
+                btn.disabled=false; btn.textContent='Submit enquiry';
+                goTo('contact');
+                alert('Sorry, something went wrong. Please try again.');
+            });
+    }
+
+    function openCallbackModal(){ document.getElementById('callback-modal').classList.add('active'); document.body.style.overflow='hidden'; }
+    function closeCallbackModal(){ document.getElementById('callback-modal').classList.remove('active'); document.body.style.overflow=''; document.querySelectorAll('#callback-modal .field-error').forEach(function(e){ e.classList.remove('show'); }); }
+
+    function handlePrefixChange(selectId, otherInputId, phoneInputId) {
+        var sel = document.getElementById(selectId);
+        var other = document.getElementById(otherInputId);
+        var phoneInput = document.getElementById(phoneInputId);
+        if (sel.value === 'other') {
+            other.style.display = 'block';
+            phoneInput.placeholder = 'Enter number';
+            phoneInput.value = '';
+            other.focus();
+        } else {
+            other.style.display = 'none';
+            phoneInput.placeholder = '801 234 5678';
+            phoneInput.value = '';
+        }
+    }
+
+    function submitCallback(){
+        if(document.getElementById('cb-company').value){ return; }
+
+        var intent = document.getElementById('callback-intent').value;
+        var fname  = document.getElementById('callback-fname').value.trim();
+        var lname  = document.getElementById('callback-lname').value.trim();
+        var email  = document.getElementById('callback-email').value.trim();
+        var phone  = document.getElementById('callback-phone').value.trim();
+        var prefix = document.getElementById('callback-phone-prefix').value;
+        var timing = document.getElementById('callback-timing').value;
+        var valid = true;
+
+        if(!intent){ document.getElementById('callback-intent-error').classList.add('show'); valid = false; }
+        if(!fname){ document.getElementById('callback-fname-error').classList.add('show'); valid = false; }
+        if(!email || !isValidEmail(email)){ document.getElementById('callback-email-error').classList.add('show'); valid = false; }
+        if(!phone || !isValidNGPhone(phone)){ document.getElementById('callback-phone-error').classList.add('show'); valid = false; }
+        if(!timing){ document.getElementById('callback-timing-error').classList.add('show'); valid = false; }
+        if(!valid) return;
+
+        var fullPhone = prefix === 'other' ? (document.getElementById('callback-phone-other').value + phone) : (prefix + phone);
+        var payload = {
+            type: 'callback',
+            intent: intent,
+            firstName: fname,
+            lastName: lname,
+            email: email,
+            phone: normalizePhone(fullPhone),
+            callbackTiming: timing,
+            submittedAt: new Date().toISOString()
+        };
+        Object.assign(payload, utmParams);
+
+        fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload), headers:{'Content-Type':'text/plain'} })
+            .then(function(r){ return r.ok ? r.json() : Promise.reject('HTTP '+r.status); })
+            .then(function(data){
+                window.dataLayer.push({event:'callback_request', intent:intent});
+                window.location.href = '/thank-you/callback?firstName=' + encodeURIComponent(fname);
+            })
+            .catch(function(err){
+                console.error('Callback failed:', err);
+                alert('Sorry, something went wrong. Please try again.');
+            });
+    }
+
+    document.addEventListener('keydown', function(e){
+        if(e.key==='Enter'){ var a=document.querySelector('.quiz-step.active'); if(!a) return; var b=a.querySelector('.next-btn'); if(b && !b.disabled){ e.preventDefault(); b.click(); } }
+        if(e.key==='Escape'){ closeCallbackModal(); }
+    });
+    document.getElementById('callback-modal').addEventListener('click', function(e){ if(e.target===this) closeCallbackModal(); });
+
+    document.addEventListener('DOMContentLoaded', function(){
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+        var banners = [
+            'Need Genuine Parts? <a href="/form/parts">Start Enquiry</a>',
+            'Book Your Next Service <a href="/form/service">Continue</a>',
+            'Looking for a Hilux? <a href="/form/buy-a-car">See Options</a>',
+            'Need Engine Oil? <a href="/form/oil">Order Now</a>'
+        ];
+        var i=0;
+        setInterval(function(){ document.getElementById('cta-banner').innerHTML='<span>'+banners[i]+'</span>'; i=(i+1)%banners.length; }, 5000);
+    });
 </script>
 </body>
 </html>
