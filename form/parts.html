@@ -92,6 +92,7 @@
         .hero-badge b { width:6px; height:6px; border-radius:50%; background:var(--red); display:inline-block; }
         .hero-title { font-size:clamp(36px,5vw,56px); font-weight:800; line-height:1.06;
             color:#fff; margin-bottom:16px; letter-spacing:-0.025em; }
+        .red-toyota { color: var(--red); }
         .hero-sub { font-size:16px; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:28px; }
         .hero-trust { display:flex; flex-wrap:wrap; gap:14px 20px; }
         .hero-trust span { display:inline-flex; align-items:center; gap:7px;
@@ -103,7 +104,7 @@
         .hero-google-badge svg { width:16px; height:16px; }
         .hero-google-badge .stars { color:#F4B400; }
 
-        /* QUIZ CARD – same as buy-a-car */
+        /* QUIZ CARD */
         .quiz-card { background:var(--white); border:1px solid rgba(255,255,255,0.08);
             border-radius:18px; box-shadow:var(--shadow-card); padding:32px 28px;
             max-width:440px; justify-self:end; width:100%; text-align:center; position:relative; overflow:hidden; }
@@ -297,7 +298,7 @@
 
     <nav>
         <a href="/" class="brand">
-            <img src="logo.png" alt="Toyota by CFAO">
+            <img src="https://toyota-cfao.netlify.app/logo.png" alt="Toyota by CFAO">
             <span>Toyota by CFAO</span>
         </a>
         <ul class="nav-links">
@@ -319,7 +320,7 @@
         <a href="#" class="mob-cta" onclick="openCallbackModal(); return false;">Request a Callback</a>
     </div>
 
-    <!-- CALLBACK MODAL (identical to your other pages) -->
+    <!-- CALLBACK MODAL -->
     <div class="modal-overlay" id="callback-modal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeCallbackModal()">&times;</button>
@@ -396,7 +397,7 @@
             <div class="hero-left">
                 <div class="hero-badge"><b></b> Genuine Parts</div>
                 <h1 class="hero-title">Request genuine <span class="red-toyota">Toyota</span> parts</h1>
-                <p class="hero-sub">Original equipment, factory‑tested, perfect fit. Tell us what you need and we'll source it fast.</p>
+                <p class="hero-sub">Original equipment, factory‑tested, perfect fit.</p>
                 <div class="hero-trust">
                     <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Factory quality</span>
                     <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EB0A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Perfect fit</span>
@@ -411,15 +412,16 @@
             <!-- QUIZ CARD -->
             <div class="quiz-card" id="quiz-card">
                 <div class="quiz-progress" id="quiz-progress">
-                    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill" style="width:25%;"></div></div>
-                    <span class="quiz-progress-label" id="qplabel">1/4</span>
+                    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill" style="width:20%;"></div></div>
+                    <span class="quiz-progress-label" id="qplabel">1/5</span>
                 </div>
 
-                <!-- SCREEN 1: Part Category -->
+                <!-- SCREEN 1: Part Category (now 2x3 grid) -->
                 <div class="quiz-step active" id="screen-1">
                     <div class="step-title">What type of part do you need?</div>
                     <div class="step-sub">Select a category – we'll help you find the right component.</div>
-                    <div class="opts g3">
+                    <!-- Changed g3 → g2 for a 2‑column grid on desktop -->
+                    <div class="opts g2">
                         <button class="opt" onclick="selectOption(this); setVal('partCategory','Engine'); goTo('screen-2')">
                             <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="2"/></svg></span>
                             <span class="opt-text"><div class="opt-title">Engine</div><div class="opt-sub">Alternators, fuel pumps, filters</div></span>
@@ -453,6 +455,8 @@
                     </div>
                 </div>
 
+                <!-- The rest of the quiz steps (brand, model, timeline, contact) remain identical to the previous version -->
+                <!-- I'll include them for completeness but they're unchanged -->
                 <!-- SCREEN 2: Vehicle -->
                 <div class="quiz-step" id="screen-2">
                     <div class="step-title">Which brand is your vehicle?</div>
@@ -474,7 +478,6 @@
                     <button class="next-btn" onclick="goTo('screen-3')">Next</button>
                     <button class="back-btn" onclick="goTo('screen-2')">&larr; Back</button>
                 </div>
-
                 <!-- SCREEN 3: Timeline -->
                 <div class="quiz-step" id="screen-3">
                     <div class="step-title">When do you need it?</div>
@@ -486,7 +489,6 @@
                     </div>
                     <button class="back-btn" onclick="goTo('screen-2b')">&larr; Back</button>
                 </div>
-
                 <!-- SCREEN 4: Contact -->
                 <div class="quiz-step" id="screen-4">
                     <div class="step-title">Almost done</div>
@@ -540,6 +542,7 @@
         <div class="eyebrow">Parts Categories</div>
         <h2 class="s-title">Find exactly what your Toyota needs</h2>
         <div class="grid-3" style="margin-top:32px;">
+            <!-- (unchanged category cards) -->
             <div class="part-cat-card">
                 <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <h3>Engine</h3><p>Alternators, fuel pumps, filters, belts and more.</p>
@@ -617,7 +620,7 @@
     </div>
 
     <footer>
-        <img src="logo.png" alt="Toyota by CFAO" height="30">
+        <img src="https://toyota-cfao.netlify.app/logo.png" alt="Toyota by CFAO" height="30">
         <div>&copy; <span id="footer-year"></span> Toyota by CFAO. All rights reserved.</div>
     </footer>
 
@@ -681,7 +684,7 @@
             }
             el.style.display='flex';
             var stepNum = idx + 1;
-            var total = 5; // includes screen-2b
+            var total = 5;
             var pct = Math.round((stepNum/total)*100);
             document.getElementById('qpfill').style.width = pct+'%';
             document.getElementById('qplabel').textContent = stepNum+'/'+total;
