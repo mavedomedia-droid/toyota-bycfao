@@ -129,7 +129,6 @@
 
         .opts { display:flex; flex-direction:column; gap:10px; }
         .opts.g2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-        .opts.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
 
         .opt { border:1.5px solid var(--border); border-radius:12px; padding:14px 16px;
             cursor:pointer; background:#FAFAFB; text-align:left; font:500 14px 'Inter',sans-serif;
@@ -175,6 +174,17 @@
         .back-btn { display:inline-flex; align-items:center; gap:4px; font-size:13px; color:var(--muted);
             background:none; border:none; cursor:pointer; font-family:'Inter',sans-serif; padding:0; margin-top:12px; }
         .back-btn:hover { color:var(--text); }
+
+        /* Segmented year buttons */
+        .seg-row { display:grid; grid-template-columns: repeat(4, 1fr); gap:5px; margin-bottom:14px; }
+        .seg {
+            border:1.5px solid var(--border); border-radius:8px; padding:10px 4px; text-align:center;
+            font:600 0.8125rem 'Inter',sans-serif; cursor:pointer; background:#FAFAFB; color:var(--text);
+            transition:.15s;
+        }
+        .seg:hover { border-color:var(--red); }
+        .seg.selected { border-color:var(--red); background:rgba(235,10,30,0.05); color:var(--red);
+            box-shadow:inset 0 0 0 1px rgba(235,10,30,0.12); }
 
         .disqualified-card { text-align:center; padding:10px 4px; }
         .disqualified-icon { width:48px; height:48px; border-radius:12px; background:rgba(235,10,30,0.06);
@@ -284,11 +294,11 @@
             footer { padding:22px 20px; flex-direction:column; gap:12px; text-align:center; }
             .qrow { grid-template-columns:1fr; }
             .opts.g2 { grid-template-columns:1fr; }
-            .opts.g3 { grid-template-columns:1fr 1fr; }
+            .seg-row { grid-template-columns:1fr 1fr; }
         }
         @media(max-width:480px){
             .hero-title { font-size:24px; }
-            .opts.g3 { grid-template-columns:1fr; }
+            .seg-row { grid-template-columns:1fr 1fr; }
         }
         @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important; scroll-behavior:auto !important;} }
     </style>
@@ -416,15 +426,14 @@
                     <span class="quiz-progress-label" id="qplabel">1/5</span>
                 </div>
 
-                <!-- SCREEN 1: Part Category (now 2x3 grid) -->
+                <!-- SCREEN 1: Part Category (2x3 grid, cleaner text) -->
                 <div class="quiz-step active" id="screen-1">
                     <div class="step-title">What type of part do you need?</div>
-                    <div class="step-sub">Select a category – we'll help you find the right component.</div>
-                    <!-- Changed g3 → g2 for a 2‑column grid on desktop -->
+                    <div class="step-sub">Choose a category to help us find the right component.</div>
                     <div class="opts g2">
                         <button class="opt" onclick="selectOption(this); setVal('partCategory','Engine'); goTo('screen-2')">
                             <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="2"/></svg></span>
-                            <span class="opt-text"><div class="opt-title">Engine</div><div class="opt-sub">Alternators, fuel pumps, filters</div></span>
+                            <span class="opt-text"><div class="opt-title">Engine</div><div class="opt-sub">Alternators, fuel pumps, belts</div></span>
                             <span class="opt-check"></span>
                         </button>
                         <button class="opt" onclick="selectOption(this); setVal('partCategory','Body Parts'); goTo('screen-2')">
@@ -449,15 +458,13 @@
                         </button>
                         <button class="opt" onclick="selectOption(this); setVal('partCategory','Other'); goTo('screen-2')">
                             <span class="opt-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></span>
-                            <span class="opt-text"><div class="opt-title">Other</div><div class="opt-sub">Not sure? Describe below</div></span>
+                            <span class="opt-text"><div class="opt-title">Other</div><div class="opt-sub">Describe what you need</div></span>
                             <span class="opt-check"></span>
                         </button>
                     </div>
                 </div>
 
-                <!-- The rest of the quiz steps (brand, model, timeline, contact) remain identical to the previous version -->
-                <!-- I'll include them for completeness but they're unchanged -->
-                <!-- SCREEN 2: Vehicle -->
+                <!-- SCREEN 2: Vehicle brand -->
                 <div class="quiz-step" id="screen-2">
                     <div class="step-title">Which brand is your vehicle?</div>
                     <div class="opts g2">
@@ -467,17 +474,28 @@
                     </div>
                     <button class="back-btn" onclick="goTo('screen-1')">&larr; Back</button>
                 </div>
-                <!-- Screen 2b: Model/Year -->
+
+                <!-- Screen 2b: Model + Year range -->
                 <div class="quiz-step" id="screen-2b">
                     <div class="step-title">Vehicle details</div>
-                    <div class="step-sub">Enter your model and year so we find the exact part.</div>
-                    <div class="qrow">
-                        <div class="qinput-group"><label>Model</label><input type="text" id="p-model" placeholder="e.g. Corolla, Hilux" oninput="setVal('model',this.value)"></div>
-                        <div class="qinput-group"><label>Year</label><input type="text" id="p-year" placeholder="e.g. 2022" oninput="setVal('year',this.value)"></div>
+                    <div class="step-sub">Enter your model and select the year range so we can match the right part.</div>
+                    <div class="qinput-group">
+                        <label>Model</label>
+                        <input type="text" id="p-model" placeholder="e.g. Corolla, Hilux" oninput="setVal('model',this.value)">
+                    </div>
+                    <div class="qinput-group">
+                        <label>Year range</label>
+                        <div class="seg-row" id="year-seg">
+                            <button type="button" class="seg" onclick="selectYearSeg(this, '2010–2020')">2010–2020</button>
+                            <button type="button" class="seg" onclick="selectYearSeg(this, '2020 & newer')">2020 &amp; newer</button>
+                            <button type="button" class="seg" onclick="selectYearSeg(this, 'Before 2010')">Before 2010</button>
+                            <button type="button" class="seg" onclick="selectYearSeg(this, 'Not sure')">Not sure</button>
+                        </div>
                     </div>
                     <button class="next-btn" onclick="goTo('screen-3')">Next</button>
                     <button class="back-btn" onclick="goTo('screen-2')">&larr; Back</button>
                 </div>
+
                 <!-- SCREEN 3: Timeline -->
                 <div class="quiz-step" id="screen-3">
                     <div class="step-title">When do you need it?</div>
@@ -489,6 +507,7 @@
                     </div>
                     <button class="back-btn" onclick="goTo('screen-2b')">&larr; Back</button>
                 </div>
+
                 <!-- SCREEN 4: Contact -->
                 <div class="quiz-step" id="screen-4">
                     <div class="step-title">Almost done</div>
@@ -542,7 +561,6 @@
         <div class="eyebrow">Parts Categories</div>
         <h2 class="s-title">Find exactly what your Toyota needs</h2>
         <div class="grid-3" style="margin-top:32px;">
-            <!-- (unchanged category cards) -->
             <div class="part-cat-card">
                 <div class="card-icon-large"><svg viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <h3>Engine</h3><p>Alternators, fuel pumps, filters, belts and more.</p>
@@ -624,6 +642,8 @@
         <div>&copy; <span id="footer-year"></span> Toyota by CFAO. All rights reserved.</div>
     </footer>
 
+    <!-- Load the GAS URL config (must come before the main script) -->
+    <script src="/config.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         var THANKYOU_URL = '/thank-you/parts';
@@ -633,7 +653,7 @@
             ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){ if(p.get(k)) utmParams[k]=p.get(k); });
         })();
 
-        var vals = {}, currentStep = 'screen-1', submitFinished = false;
+        var vals = { yearRange: '' }, currentStep = 'screen-1', submitFinished = false;
 
         function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
         function setVal(k,v){ vals[k]=v; }
@@ -652,6 +672,13 @@
             var p = btn.closest('.opts');
             if(p) p.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
             btn.classList.add('selected');
+        }
+
+        function selectYearSeg(el, value) {
+            var parent = el.parentElement;
+            parent.querySelectorAll('.seg').forEach(function(s){ s.classList.remove('selected'); });
+            el.classList.add('selected');
+            setVal('yearRange', value);
         }
 
         function goTo(stepId){
@@ -706,6 +733,10 @@
             if(!city){ showError('city','err-city'); valid=false; }
             if(!valid) return;
 
+            // combine model + year range
+            var modelText = vals.model || '';
+            if (vals.yearRange) modelText = modelText ? modelText + ' ' + vals.yearRange : vals.yearRange;
+
             var payload = {
                 type: 'parts',
                 email: email,
@@ -714,13 +745,12 @@
                 phone: normalizePhone(phone),
                 city: city,
                 brand: vals.brand || '',
-                model: vals.model || '',
-                year: vals.year || '',
+                model: modelText,
                 timeline: vals.timeline || '',
                 enquiryType: 'parts',
                 serviceType: vals.partCategory || '',
-                partCategory: vals.partCategory,
-                partDescription: vals.partDescription || '',
+                budget: '',
+                callbackTiming: '',
                 submittedAt: new Date().toISOString(),
                 utm_source: utmParams.utm_source || '',
                 utm_medium: utmParams.utm_medium || '',
@@ -754,7 +784,7 @@
                 });
         }
 
-        // Callback modal functions (identical to your other pages)
+        // Callback modal functions
         function openCallbackModal(){ document.getElementById('callback-modal').classList.add('active'); document.body.style.overflow='hidden'; }
         function closeCallbackModal(){ document.getElementById('callback-modal').classList.remove('active'); document.body.style.overflow=''; document.querySelectorAll('#callback-modal .field-error').forEach(function(e){ e.classList.remove('show'); }); }
 
